@@ -24,7 +24,7 @@
     <ClCompile Include="..\src\GLSLShader\GLSLShader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\GZN.cpp">
+    <ClCompile Include="..\src\GMU.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
