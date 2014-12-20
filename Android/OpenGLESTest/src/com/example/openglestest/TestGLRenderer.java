@@ -185,6 +185,7 @@ public class TestGLRenderer implements GLSurfaceView.Renderer {
 		
 		glUseProgram(0);
 		*/
+		//FileUtils.init_asset_manager(mActivityContext.getAssets());
 		rendererNativeWrapper.on_surface_created();
 	}
 
