@@ -12,9 +12,10 @@ import com.example.utils.ShaderHelper;
 import com.example.utils.TextureHelper;
 
 import android.content.Context;
-import android.opengl.GLES20;
+import static android.opengl.GLES20.*;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
+import android.util.Log;
 
 public class TestGLRenderer implements GLSurfaceView.Renderer {
 
@@ -102,42 +103,42 @@ public class TestGLRenderer implements GLSurfaceView.Renderer {
 	@Override
 	public void onDrawFrame(GL10 arg0) {
 		// TODO Auto-generated method stub
-		GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
-		GLES20.glUseProgram(mTextureProgramHandle);   
+		glUseProgram(mTextureProgramHandle);   
 		
 		drawQuad();
 		
-		GLES20.glUseProgram(0);
+		glUseProgram(0);
 		
 	}
 	
 	private void drawQuad() {
 		mPositions.position(0);		
-        GLES20.glVertexAttribPointer(mPositionHandle, mPositionDataSize, GLES20.GL_FLOAT, false,
+        glVertexAttribPointer(mPositionHandle, mPositionDataSize, GL_FLOAT, false,
         		0, mPositions);        
-        GLES20.glEnableVertexAttribArray(mPositionHandle);  
+        glEnableVertexAttribArray(mPositionHandle);  
         
         mTextureCoords.position(0);		
-        GLES20.glVertexAttribPointer(mTextureCoordsHandle, mTextureCoordsDataSize, GLES20.GL_FLOAT, false,
+        glVertexAttribPointer(mTextureCoordsHandle, mTextureCoordsDataSize, GL_FLOAT, false,
         		0, mTextureCoords);        
-        GLES20.glEnableVertexAttribArray(mTextureCoordsHandle);
+        glEnableVertexAttribArray(mTextureCoordsHandle);
         
-        GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
-        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mTexture1DataHandle);
-        GLES20.glUniform1i(mTexture1UniformHandle, 0); 
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, mTexture1DataHandle);
+        glUniform1i(mTexture1UniformHandle, 0); 
         
-        GLES20.glActiveTexture(GLES20.GL_TEXTURE1);
-        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mTexture2DataHandle);
-        GLES20.glUniform1i(mTexture2UniformHandle, 1); 
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, mTexture2DataHandle);
+        glUniform1i(mTexture2UniformHandle, 1); 
         
-        GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, 6);    
+        glDrawArrays(GL_TRIANGLES, 0, 6);    
 	}
 
 	@Override
 	public void onSurfaceChanged(GL10 gl, int width, int height) {
 		// TODO Auto-generated method stub
-		GLES20.glViewport(0, 0, width, height);
+		glViewport(0, 0, width, height);
 
 	    float ratio = (float) width / height;
 
@@ -152,35 +153,35 @@ public class TestGLRenderer implements GLSurfaceView.Renderer {
 	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
 		// TODO Auto-generated method stub
 		// Set the background clear color to black.
-		GLES20.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 				
 		// Use culling to remove back faces.
-		//GLES20.glEnable(GLES20.GL_CULL_FACE);
+		//glEnable(GL_CULL_FACE);
 				
 		// Enable depth testing
-		GLES20.glEnable(GLES20.GL_DEPTH_TEST);
+		glEnable(GL_DEPTH_TEST);
 		
 		String textureVS = RawResourceReader.readTextFileFromRawResource(mActivityContext, R.raw.texture_viewer_vertex);
 		String textureFS = RawResourceReader.readTextFileFromRawResource(mActivityContext, R.raw.texture_viewer_fragment);
 		
-		final int pointVertexShaderHandle = ShaderHelper.compileShader(GLES20.GL_VERTEX_SHADER, textureVS);
-        final int pointFragmentShaderHandle = ShaderHelper.compileShader(GLES20.GL_FRAGMENT_SHADER, textureFS);
+		final int pointVertexShaderHandle = ShaderHelper.compileShader(GL_VERTEX_SHADER, textureVS);
+        final int pointFragmentShaderHandle = ShaderHelper.compileShader(GL_FRAGMENT_SHADER, textureFS);
         mTextureProgramHandle = ShaderHelper.createAndLinkProgram(pointVertexShaderHandle, pointFragmentShaderHandle, 
         		new String[] {"vPosition","vUV","tex","tex2"}); 
         
         //Get uniforms, attributes ...
-        GLES20.glUseProgram(mTextureProgramHandle);
+        glUseProgram(mTextureProgramHandle);
 		
-		mPositionHandle = GLES20.glGetAttribLocation(mTextureProgramHandle,"vPosition");
-		mTextureCoordsHandle = GLES20.glGetAttribLocation(mTextureProgramHandle,"vUV");
-		mTexture1UniformHandle = GLES20.glGetUniformLocation(mTextureProgramHandle, "tex");
-		mTexture2UniformHandle = GLES20.glGetUniformLocation(mTextureProgramHandle, "tex2");
-		//GLES20.glUniform1i(mTextureUniformHandle, 0);    
+		mPositionHandle = glGetAttribLocation(mTextureProgramHandle,"vPosition");
+		mTextureCoordsHandle = glGetAttribLocation(mTextureProgramHandle,"vUV");
+		mTexture1UniformHandle = glGetUniformLocation(mTextureProgramHandle, "tex");
+		mTexture2UniformHandle = glGetUniformLocation(mTextureProgramHandle, "tex2");
+		//glUniform1i(mTextureUniformHandle, 0);    
 		
 		mTexture1DataHandle = TextureHelper.loadTexture(mActivityContext, R.drawable.floor);
 		mTexture2DataHandle = TextureHelper.loadTexture(mActivityContext, R.drawable.texture);
 		
-		GLES20.glUseProgram(0);
+		glUseProgram(0);
 		
 	}
 
