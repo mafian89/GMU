@@ -5,7 +5,8 @@ include $(CLEAR_VARS)
 LOCAL_MODULE    := testNativeRenderer
 LOCAL_CFLAGS    := -Wall -Wextra
 LOCAL_SRC_FILES := \
-	Renderer.c
+	Renderer.c \
+	logic.cpp
 LOCAL_LDLIBS := -lGLESv2
  
 include $(BUILD_SHARED_LIBRARY)

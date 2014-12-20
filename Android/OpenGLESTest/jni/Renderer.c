@@ -6,7 +6,6 @@
  */
 
 #include "Renderer.h"
-#include "Common.h"
 
 
 JNIEXPORT void JNICALL Java_com_example_openglestest_rendererNativeWrapper_on_1surface_1created

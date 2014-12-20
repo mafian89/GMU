@@ -1,4 +1,5 @@
 #include <jni.h>
+#include "logic.h"
 /* Header for class com_example_openglestest_rendererNativeWrapper */
 
 #ifndef RENDERER_H_
