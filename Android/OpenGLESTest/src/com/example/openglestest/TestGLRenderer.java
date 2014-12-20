@@ -103,14 +103,14 @@ public class TestGLRenderer implements GLSurfaceView.Renderer {
 	@Override
 	public void onDrawFrame(GL10 arg0) {
 		// TODO Auto-generated method stub
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		/*glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
 		glUseProgram(mTextureProgramHandle);   
 		
 		drawQuad();
 		
-		glUseProgram(0);
-		
+		glUseProgram(0); */
+		rendererNativeWrapper.on_draw_frame();
 	}
 	
 	private void drawQuad() {
@@ -138,12 +138,14 @@ public class TestGLRenderer implements GLSurfaceView.Renderer {
 	@Override
 	public void onSurfaceChanged(GL10 gl, int width, int height) {
 		// TODO Auto-generated method stub
-		glViewport(0, 0, width, height);
+		/*glViewport(0, 0, width, height);
 
 	    float ratio = (float) width / height;
 
 	    // create a projection matrix from device screen geometry
 	    Matrix.frustumM(mProjMatrix, 0, -ratio, ratio, -1, 1, 1, 10);
+	    */
+		rendererNativeWrapper.on_surface_changed(width, height);
 	}
 
 	/**
@@ -153,7 +155,7 @@ public class TestGLRenderer implements GLSurfaceView.Renderer {
 	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
 		// TODO Auto-generated method stub
 		// Set the background clear color to black.
-		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+		/*glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 				
 		// Use culling to remove back faces.
 		//glEnable(GL_CULL_FACE);
@@ -182,7 +184,8 @@ public class TestGLRenderer implements GLSurfaceView.Renderer {
 		mTexture2DataHandle = TextureHelper.loadTexture(mActivityContext, R.drawable.texture);
 		
 		glUseProgram(0);
-		
+		*/
+		rendererNativeWrapper.on_surface_created();
 	}
 
 }
