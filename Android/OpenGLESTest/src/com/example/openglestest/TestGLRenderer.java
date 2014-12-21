@@ -7,6 +7,7 @@ import java.nio.FloatBuffer;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
+import com.example.utils.FileUtils;
 import com.example.utils.RawResourceReader;
 import com.example.utils.ShaderHelper;
 import com.example.utils.TextureHelper;
@@ -186,6 +187,7 @@ public class TestGLRenderer implements GLSurfaceView.Renderer {
 		glUseProgram(0);
 		*/
 		//FileUtils.init_asset_manager(mActivityContext.getAssets());
+		FileUtils.myNative(mActivityContext.getAssets());
 		rendererNativeWrapper.on_surface_created();
 	}
 

@@ -12,6 +12,13 @@
 #include <GLES2/gl2.h>
 #include <GLES2/gl2ext.h>
 #include <android/asset_manager.h>
+#include <android/asset_manager_jni.h>
+
+typedef struct {
+	const long data_length;
+	const void* data;
+	const void* file_handle;
+} FileData;
 /*
 void on_surface_created() {
     glClearColor(1.0f, 0.0f, 0.0f, 0.0f);
