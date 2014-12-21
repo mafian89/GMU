@@ -12,6 +12,7 @@
 #include "ShadersUtils.h"
 #include <iostream>
 
+#define TAG "ShadersUtils"
 GLSLShader::GLSLShader(void)
 {
 	_totalShaders=0;
@@ -27,11 +28,12 @@ GLSLShader::~GLSLShader(void)
 	_uniformLocationList.clear();
 }
 
-void GLSLShader::LoadFromString(GLenum type, const char * source) {
+void GLSLShader::LoadFromString(GLenum type, const char * source, const GLint len) {
 	GLuint shader = glCreateShader (type);
 
+	//glShaderSource(shader_object_id, 1, (const GLchar **)&source, &length);
 	//const char * ptmp = source.c_str();
-	glShaderSource (shader, 1, &source, 0);
+	glShaderSource (shader, 1, &source, &len);
 
 	//check whether the shader loads fine
 	GLint status;
@@ -42,7 +44,8 @@ void GLSLShader::LoadFromString(GLenum type, const char * source) {
 		glGetShaderiv (shader, GL_INFO_LOG_LENGTH, &infoLogLength);
 		GLchar *infoLog= new GLchar[infoLogLength];
 		glGetShaderInfoLog (shader, infoLogLength, 0, infoLog);
-		cerr<<"Compile log: "<<infoLog<<endl;
+		__android_log_print(ANDROID_LOG_ERROR, TAG, "Compile log:  %s",infoLog);
+		//cerr<<"Compile log: "<<infoLog<<endl;
 		delete [] infoLog;
 	}
 	_shaders[_totalShaders++]=shader;
@@ -68,7 +71,8 @@ void GLSLShader::CreateAndLinkProgram() {
 		glGetProgramiv (_program, GL_INFO_LOG_LENGTH, &infoLogLength);
 		GLchar *infoLog= new GLchar[infoLogLength];
 		glGetProgramInfoLog (_program, infoLogLength, 0, infoLog);
-		cerr<<"Link log: "<<infoLog<<endl;
+		//cerr<<"Link log: "<<infoLog<<endl;
+		__android_log_print(ANDROID_LOG_ERROR, TAG, "Link log: %s",infoLog);
 		delete [] infoLog;
 	}
 
@@ -115,9 +119,10 @@ void GLSLShader::LoadFromFile(GLenum whichShader, const string& filename){
 		}		*/
 		string buffer(std::istreambuf_iterator<char>(fp), (std::istreambuf_iterator<char>()));
 		//copy to source
-		LoadFromString(whichShader, buffer.c_str());
+		LoadFromString(whichShader, buffer.c_str(), (GLint)buffer.length());
 	} else {
-		cerr<<"Error loading shader: "<<filename<<endl;
+		//cerr<<"Error loading shader: "<<filename<<endl;
+		__android_log_print(ANDROID_LOG_ERROR, TAG, "Error loading shader: %s",filename.c_str());
 	}
 }
 

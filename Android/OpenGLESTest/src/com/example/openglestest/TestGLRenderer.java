@@ -187,8 +187,12 @@ public class TestGLRenderer implements GLSurfaceView.Renderer {
 		glUseProgram(0);
 		*/
 		//FileUtils.init_asset_manager(mActivityContext.getAssets());
+		//Log.d("MainApp", "AaaAAaaaAAAaaaa");
+		//mTexture1DataHandle = TextureHelper.loadTexture(mActivityContext, R.drawable.floor);
+		//mTexture2DataHandle = TextureHelper.loadTexture(mActivityContext, R.drawable.texture);
 		FileUtils.myNative(mActivityContext.getAssets());
 		rendererNativeWrapper.on_surface_created();
+		//rendererNativeWrapper.injectTextures(mTexture1DataHandle, mTexture2DataHandle);
 	}
 
 }

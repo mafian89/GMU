@@ -22,3 +22,8 @@ JNIEXPORT void JNICALL Java_com_example_openglestest_rendererNativeWrapper_on_1d
     (JNIEnv * env, jclass cls) {
     on_draw_frame();
 }
+
+JNIEXPORT void JNICALL Java_com_example_openglestest_rendererNativeWrapper_injectTextures
+  (JNIEnv * env, jclass clazz, jint tex1, jint tex2) {
+
+}

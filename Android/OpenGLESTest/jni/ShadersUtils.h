@@ -22,7 +22,7 @@ class GLSLShader
 public:
 	GLSLShader(void);
 	~GLSLShader(void);
-	void LoadFromString(GLenum whichShader, const char * source);
+	void LoadFromString(GLenum whichShader, const char * source, const GLint len);
 	void LoadFromFile(GLenum whichShader, const string& filename);
 	void CreateAndLinkProgram();
 	void Use();

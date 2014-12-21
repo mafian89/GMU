@@ -30,6 +30,9 @@ JNIEXPORT void JNICALL Java_com_example_openglestest_rendererNativeWrapper_on_1s
 JNIEXPORT void JNICALL Java_com_example_openglestest_rendererNativeWrapper_on_1draw_1frame
   (JNIEnv *, jclass);
 
+JNIEXPORT void JNICALL Java_com_example_openglestest_rendererNativeWrapper_injectTextures
+  (JNIEnv *, jclass, jint, jint);
+
 #ifdef __cplusplus
 }
 #endif
