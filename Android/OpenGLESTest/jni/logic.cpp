@@ -7,6 +7,9 @@
 
 #include "logic.h"
 #include "FileUtils.h"
+#include "ShadersUtils.h"
+
+static GLSLShader basicShader;
 
 #define EPRINTF(...)  __android_log_print(ANDROID_LOG_ERROR,"logic",__VA_ARGS__)
 #define DPRINTF(...)  __android_log_print(ANDROID_LOG_DEBUG,"logic",__VA_ARGS__)

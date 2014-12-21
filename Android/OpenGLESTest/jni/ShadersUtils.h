@@ -9,10 +9,6 @@
 #ifndef SHADERSUTILS_H_
 #define SHADERSUTILS_H_
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include <map>
 #include <string>
 
@@ -45,9 +41,5 @@ private:
 	map<string,GLuint> _uniformLocationList;
 };
 
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif /* SHADERSUTILS_H_ */
