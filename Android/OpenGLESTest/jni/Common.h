@@ -13,6 +13,7 @@
 #include <GLES2/gl2ext.h>
 #include <android/asset_manager.h>
 #include <android/asset_manager_jni.h>
+#include <android/log.h>
 
 typedef struct {
 	const long data_length;

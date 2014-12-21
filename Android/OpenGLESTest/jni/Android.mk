@@ -9,6 +9,6 @@ LOCAL_SRC_FILES := \
 	logic.cpp \
 	FileUtils.cpp \
 	ShadersUtils.cpp
-LOCAL_LDLIBS := -lGLESv2 -landroid
+LOCAL_LDLIBS := -lGLESv2 -landroid -llog
  
 include $(BUILD_SHARED_LIBRARY)

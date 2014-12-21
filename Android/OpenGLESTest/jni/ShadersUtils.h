@@ -9,6 +9,9 @@
 #ifndef SHADERSUTILS_H_
 #define SHADERSUTILS_H_
 
+//#define EPRINTF(...)  __android_log_print(ANDROID_LOG_ERROR,"ShaderUtils",__VA_ARGS__)
+//#define DPRINTF(...)  __android_log_print(ANDROID_LOG_DEBUG,"ShaderUtils",__VA_ARGS__)
+
 #include <map>
 #include <string>
 
@@ -19,7 +22,7 @@ class GLSLShader
 public:
 	GLSLShader(void);
 	~GLSLShader(void);
-	void LoadFromString(GLenum whichShader, const string& source);
+	void LoadFromString(GLenum whichShader, const char * source);
 	void LoadFromFile(GLenum whichShader, const string& filename);
 	void CreateAndLinkProgram();
 	void Use();

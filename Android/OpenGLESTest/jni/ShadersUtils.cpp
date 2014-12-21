@@ -12,13 +12,11 @@
 #include "ShadersUtils.h"
 #include <iostream>
 
-
 GLSLShader::GLSLShader(void)
 {
 	_totalShaders=0;
 	_shaders[VERTEX_SHADER]=0;
 	_shaders[FRAGMENT_SHADER]=0;
-	_shaders[GEOMETRY_SHADER]=0;
 	_attributeList.clear();
 	_uniformLocationList.clear();
 }
@@ -29,11 +27,11 @@ GLSLShader::~GLSLShader(void)
 	_uniformLocationList.clear();
 }
 
-void GLSLShader::LoadFromString(GLenum type, const string& source) {
+void GLSLShader::LoadFromString(GLenum type, const char * source) {
 	GLuint shader = glCreateShader (type);
 
-	const char * ptmp = source.c_str();
-	glShaderSource (shader, 1, &ptmp, 0);
+	//const char * ptmp = source.c_str();
+	glShaderSource (shader, 1, &source, 0);
 
 	//check whether the shader loads fine
 	GLint status;
@@ -59,9 +57,6 @@ void GLSLShader::CreateAndLinkProgram() {
 	if (_shaders[FRAGMENT_SHADER] != 0) {
 		glAttachShader (_program, _shaders[FRAGMENT_SHADER]);
 	}
-	if (_shaders[GEOMETRY_SHADER] != 0) {
-		glAttachShader (_program, _shaders[GEOMETRY_SHADER]);
-	}
 
 	//link and check whether the program links fine
 	GLint status;
@@ -79,7 +74,6 @@ void GLSLShader::CreateAndLinkProgram() {
 
 	glDeleteShader(_shaders[VERTEX_SHADER]);
 	glDeleteShader(_shaders[FRAGMENT_SHADER]);
-	glDeleteShader(_shaders[GEOMETRY_SHADER]);
 }
 
 void GLSLShader::Use() {
@@ -121,7 +115,7 @@ void GLSLShader::LoadFromFile(GLenum whichShader, const string& filename){
 		}		*/
 		string buffer(std::istreambuf_iterator<char>(fp), (std::istreambuf_iterator<char>()));
 		//copy to source
-		LoadFromString(whichShader, buffer);
+		LoadFromString(whichShader, buffer.c_str());
 	} else {
 		cerr<<"Error loading shader: "<<filename<<endl;
 	}
