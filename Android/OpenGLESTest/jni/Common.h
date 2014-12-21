@@ -20,6 +20,10 @@ typedef struct {
 	const void* data;
 	const void* file_handle;
 } FileData;
+
+
+//extern GLuint texID1,texID2;
+
 /*
 void on_surface_created() {
     glClearColor(1.0f, 0.0f, 0.0f, 0.0f);

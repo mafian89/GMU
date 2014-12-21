@@ -1,5 +1,6 @@
 package com.example.openglestest;
 
+import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
@@ -13,6 +14,8 @@ import com.example.utils.ShaderHelper;
 import com.example.utils.TextureHelper;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import static android.opengl.GLES20.*;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
@@ -44,6 +47,8 @@ public class TestGLRenderer implements GLSurfaceView.Renderer {
 	private int mTexture2UniformHandle;
 	private int mTexture1DataHandle;
 	private int mTexture2DataHandle;
+	
+	private boolean initialized = false;
 	
 	//Context will be probably used for loading resources
 	public TestGLRenderer(final Context activityContext) {
@@ -188,11 +193,25 @@ public class TestGLRenderer implements GLSurfaceView.Renderer {
 		*/
 		//FileUtils.init_asset_manager(mActivityContext.getAssets());
 		//Log.d("MainApp", "AaaAAaaaAAAaaaa");
-		//mTexture1DataHandle = TextureHelper.loadTexture(mActivityContext, R.drawable.floor);
-		//mTexture2DataHandle = TextureHelper.loadTexture(mActivityContext, R.drawable.texture);
-		FileUtils.myNative(mActivityContext.getAssets());
-		rendererNativeWrapper.on_surface_created();
-		//rendererNativeWrapper.injectTextures(mTexture1DataHandle, mTexture2DataHandle);
+		
+		if(!initialized) {
+			final BitmapFactory.Options options = new BitmapFactory.Options();
+			options.inScaled = false;
+			final Bitmap bitmap1 = BitmapFactory.decodeResource(mActivityContext.getResources(), R.drawable.floor, options);
+			final Bitmap bitmap2 = BitmapFactory.decodeResource(mActivityContext.getResources(), R.drawable.texture, options);
+			ByteArrayOutputStream stream = new ByteArrayOutputStream();
+		
+			bitmap1.compress(Bitmap.CompressFormat.PNG, 100, stream);
+			byte[] byteArray1 = stream.toByteArray();
+			
+			bitmap2.compress(Bitmap.CompressFormat.PNG, 100, stream);
+			byte[] byteArray2 = stream.toByteArray();
+			
+			initialized = true;
+			FileUtils.myNative(mActivityContext.getAssets());
+			rendererNativeWrapper.on_surface_created();
+			rendererNativeWrapper.injectTextures(byteArray1, byteArray2);
+		}
 	}
 
 }

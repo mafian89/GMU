@@ -11,5 +11,5 @@ public class rendererNativeWrapper {
  
     public static native void on_draw_frame();
     
-    public static native void injectTextures(int tex1, int tex2);
+    public static native void injectTextures(byte [] tex1, byte [] tex2);
 }

@@ -31,6 +31,7 @@ float uv[] = {
 };
 
 void initQuad() {
+
 	basicShader.Use();
 	//Create uniforms and attributes (filled later)
 	basicShader.AddAttribute("vPosition");
@@ -53,6 +54,8 @@ void initQuad() {
 		0.0, 0.0,
 		1.0, 0.0
 	};
+	glUniform1i(basicShader("tex1"), 0);
+	glUniform1i(basicShader("tex2"), 1);
 
 	//Generate VBO
 	glGenBuffers(1, &VBO);
@@ -82,6 +85,10 @@ void drawQuad() {
 	glVertexAttribPointer(basicShader["vUV"], 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GL_FLOAT), (GLvoid*)(sizeof(float)* 8));
 	glEnableVertexAttribArray(basicShader["vPosition"]);
 	glEnableVertexAttribArray(basicShader["vUV"]);
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, texID1);
+
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
