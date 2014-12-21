@@ -234,6 +234,7 @@ public class TestGLRenderer implements GLSurfaceView.Renderer {
 		bitmap1.copyPixelsToBuffer(buffer); //Move the byte data to the buffer
 		byte[] array = buffer.array(); //Get the underlying array containing the data.
 		
+		bitmap1.recycle();
 		return array;
 	}
 }
