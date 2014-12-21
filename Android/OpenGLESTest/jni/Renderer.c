@@ -30,7 +30,6 @@ JNIEXPORT void JNICALL Java_com_example_openglestest_rendererNativeWrapper_injec
 
 	   jbyte*            jimgData = 0;
 	   jboolean          isCopy = 0;
-	   //jbyte*      (*GetByteArrayElements)(JNIEnv*, jbyteArray, jboolean*);
 	   jimgData = (*env)->GetByteArrayElements( env, tex1, &isCopy );
 
 	   glGenTextures(1, &texID1);
@@ -39,7 +38,7 @@ JNIEXPORT void JNICALL Java_com_example_openglestest_rendererNativeWrapper_injec
 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 512, 512, 0, GL_RGBA, GL_UNSIGNED_BYTE, jimgData);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 256, 256, 0, GL_RGBA, GL_UNSIGNED_BYTE, jimgData);
 		glGenerateMipmap(GL_TEXTURE_2D);
 
 		glBindTexture(GL_TEXTURE_2D, 0);
