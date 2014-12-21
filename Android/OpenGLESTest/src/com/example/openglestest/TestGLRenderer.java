@@ -15,6 +15,7 @@ import com.example.utils.TextureHelper;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import static android.opengl.GLES20.*;
 import android.opengl.GLSurfaceView;
@@ -197,20 +198,24 @@ public class TestGLRenderer implements GLSurfaceView.Renderer {
 		if(!initialized) {
 			final BitmapFactory.Options options = new BitmapFactory.Options();
 			options.inScaled = false;
+			options.inPreferredConfig = Config.ARGB_8888;
 			final Bitmap bitmap1 = BitmapFactory.decodeResource(mActivityContext.getResources(), R.drawable.floor, options);
 			final Bitmap bitmap2 = BitmapFactory.decodeResource(mActivityContext.getResources(), R.drawable.texture, options);
-			ByteArrayOutputStream stream = new ByteArrayOutputStream();
-		
-			bitmap1.compress(Bitmap.CompressFormat.PNG, 100, stream);
-			byte[] byteArray1 = stream.toByteArray();
 			
-			bitmap2.compress(Bitmap.CompressFormat.PNG, 100, stream);
-			byte[] byteArray2 = stream.toByteArray();
+			int bytes = bitmap1.getByteCount();
+			ByteBuffer buffer = ByteBuffer.allocate(bytes); //Create a new buffer
+			bitmap1.copyPixelsToBuffer(buffer); //Move the byte data to the buffer
+			byte[] array = buffer.array(); //Get the underlying array containing the data.
+			
+			bytes = bitmap2.getByteCount();
+			ByteBuffer buffer1 = ByteBuffer.allocate(bytes); //Create a new buffer
+			bitmap1.copyPixelsToBuffer(buffer1); //Move the byte data to the buffer
+			byte[] array1 = buffer1.array(); //Get the underlying array containing the data.
 			
 			initialized = true;
 			FileUtils.myNative(mActivityContext.getAssets());
 			rendererNativeWrapper.on_surface_created();
-			rendererNativeWrapper.injectTextures(byteArray1, byteArray2);
+			rendererNativeWrapper.injectTextures(array, array1);
 		}
 	}
 

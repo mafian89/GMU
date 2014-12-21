@@ -89,6 +89,9 @@ void drawQuad() {
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texID1);
 
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, texID2);
+
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
