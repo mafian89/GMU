@@ -196,11 +196,11 @@ public class TestGLRenderer implements GLSurfaceView.Renderer {
 		//Log.d("MainApp", "AaaAAaaaAAAaaaa");
 		
 		if(!initialized) {
-			final BitmapFactory.Options options = new BitmapFactory.Options();
+			/*final BitmapFactory.Options options = new BitmapFactory.Options();
 			options.inScaled = false;
 			options.inPreferredConfig = Config.ARGB_8888;
-			final Bitmap bitmap1 = BitmapFactory.decodeResource(mActivityContext.getResources(), R.drawable.floor, options);
-			final Bitmap bitmap2 = BitmapFactory.decodeResource(mActivityContext.getResources(), R.drawable.texture, options);
+			final Bitmap bitmap1 = BitmapFactory.decodeResource(mActivityContext.getResources(), R.drawable.texture, options);
+			final Bitmap bitmap2 = BitmapFactory.decodeResource(mActivityContext.getResources(), R.drawable.floor, options);
 			
 			int bytes = bitmap1.getByteCount();
 			ByteBuffer buffer = ByteBuffer.allocate(bytes); //Create a new buffer
@@ -210,7 +210,10 @@ public class TestGLRenderer implements GLSurfaceView.Renderer {
 			bytes = bitmap2.getByteCount();
 			ByteBuffer buffer1 = ByteBuffer.allocate(bytes); //Create a new buffer
 			bitmap1.copyPixelsToBuffer(buffer1); //Move the byte data to the buffer
-			byte[] array1 = buffer1.array(); //Get the underlying array containing the data.
+			byte[] array1 = buffer1.array(); //Get the underlying array containing the data.*/
+			
+			byte[] array1 = getByteArrayFromResource(R.drawable.texture);
+			byte[] array = getByteArrayFromResource(R.drawable.floor);
 			
 			initialized = true;
 			FileUtils.myNative(mActivityContext.getAssets());
@@ -219,4 +222,18 @@ public class TestGLRenderer implements GLSurfaceView.Renderer {
 		}
 	}
 
+	
+	private byte[] getByteArrayFromResource(final int resourceId) {
+		final BitmapFactory.Options options = new BitmapFactory.Options();
+		options.inScaled = false;
+		options.inPreferredConfig = Config.ARGB_8888;
+		final Bitmap bitmap1 = BitmapFactory.decodeResource(mActivityContext.getResources(), resourceId, options);
+		
+		int bytes = bitmap1.getByteCount();
+		ByteBuffer buffer = ByteBuffer.allocate(bytes); //Create a new buffer
+		bitmap1.copyPixelsToBuffer(buffer); //Move the byte data to the buffer
+		byte[] array = buffer.array(); //Get the underlying array containing the data.
+		
+		return array;
+	}
 }
