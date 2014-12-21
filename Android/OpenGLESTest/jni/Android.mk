@@ -7,7 +7,8 @@ LOCAL_CFLAGS    := -Wall -Wextra
 LOCAL_SRC_FILES := \
 	Renderer.c \
 	logic.cpp \
-	FileUtils.cpp
+	FileUtils.cpp \
+	ShadersUtils.cpp
 LOCAL_LDLIBS := -lGLESv2 -landroid
  
 include $(BUILD_SHARED_LIBRARY)
