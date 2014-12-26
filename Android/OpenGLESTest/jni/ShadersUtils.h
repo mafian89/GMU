@@ -5,44 +5,20 @@
  *      Author: Tomas
  */
 #include "Common.h"
+#include "FileUtils.h"
+#include <stdio.h>
+#include <iostream>
 
 #ifndef SHADERSUTILS_H_
 #define SHADERSUTILS_H_
 
-//#define EPRINTF(...)  __android_log_print(ANDROID_LOG_ERROR,"ShaderUtils",__VA_ARGS__)
-//#define DPRINTF(...)  __android_log_print(ANDROID_LOG_DEBUG,"ShaderUtils",__VA_ARGS__)
+#define DPRINTF(...)  __android_log_print(ANDROID_LOG_DEBUG,"Shader",__VA_ARGS__)
 
-#include <map>
-#include <string>
-
-using namespace std;
-
-class GLSLShader
-{
-public:
-	GLSLShader(void);
-	~GLSLShader(void);
-	void LoadFromString(GLenum whichShader, const char * source, const GLint len);
-	void LoadFromFile(GLenum whichShader, const string& filename);
-	void CreateAndLinkProgram();
-	void Use();
-	void UnUse();
-	void AddAttribute(const string& attribute);
-	void AddUniform(const string& uniform);
-	GLuint GetProgram() const;
-	//An indexer that returns the location of the attribute/uniform
-	GLuint operator[](const string& attribute);
-	GLuint operator()(const string& uniform);
-	//Program deletion
-	void DeleteProgram() {glDeleteProgram(_program);_program=-1;}
-private:
-	enum ShaderType {VERTEX_SHADER, FRAGMENT_SHADER, GEOMETRY_SHADER};
-	GLuint	_program;
-	int _totalShaders;
-	GLuint _shaders[3];//0->vertexshader, 1->fragmentshader, 2->geometryshader
-	map<string,GLuint> _attributeList;
-	map<string,GLuint> _uniformLocationList;
-};
-
+GLuint compile_shader(const GLenum type, const GLchar* source, const GLint length);
+GLuint link_program(const GLuint vertex_shader, const GLuint fragment_shader);
+GLuint build_program(
+	const GLchar * vertex_shader_source, const GLint vertex_shader_source_length,
+	const GLchar * fragment_shader_source, const GLint fragment_shader_source_length);
+GLuint build_program_from_assets(const char* vertex_shader_path, const char* fragment_shader_path);
 
 #endif /* SHADERSUTILS_H_ */

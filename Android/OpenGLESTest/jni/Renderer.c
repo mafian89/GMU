@@ -54,4 +54,5 @@ JNIEXPORT void JNICALL Java_com_example_openglestest_rendererNativeWrapper_injec
 	glGenerateMipmap(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, 0);
 	(*env)->ReleaseByteArrayElements(env, tex2, jimgData1, JNI_ABORT);
+
 }

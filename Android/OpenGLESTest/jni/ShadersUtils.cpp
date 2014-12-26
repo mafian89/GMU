@@ -1,130 +1,65 @@
-/*
- * ShadersUtils.cpp
- *
- *  Created on: 21.12.2014
- *      Author: Tomas
- */
-
-//A simple class for handling GLSL shader compilation
-//Author: Movania Muhammad Mobeen
-//Last Modified: February 2, 2011
-
 #include "ShadersUtils.h"
-#include <iostream>
 
-#define TAG "ShadersUtils"
-GLSLShader::GLSLShader(void)
-{
-	_totalShaders=0;
-	_shaders[VERTEX_SHADER]=0;
-	_shaders[FRAGMENT_SHADER]=0;
-	_attributeList.clear();
-	_uniformLocationList.clear();
-}
+#define SHADER "Shader"
 
-GLSLShader::~GLSLShader(void)
-{
-	_attributeList.clear();
-	_uniformLocationList.clear();
-}
+GLuint compile_shader(const GLenum type, const GLchar* source, const GLint length) {
+	GLuint shader_object_id = glCreateShader(type);
+	GLint compile_status;
 
-void GLSLShader::LoadFromString(GLenum type, const char * source, const GLint len) {
-	GLuint shader = glCreateShader (type);
+	glShaderSource(shader_object_id, 1, (const GLchar **)&source, &length);
+	glCompileShader(shader_object_id);
+	glGetShaderiv(shader_object_id, GL_COMPILE_STATUS, &compile_status);
 
-	//glShaderSource(shader_object_id, 1, (const GLchar **)&source, &length);
-	//const char * ptmp = source.c_str();
-	glShaderSource (shader, 1, &source, &len);
-
-	//check whether the shader loads fine
-	GLint status;
-	glCompileShader (shader);
-	glGetShaderiv (shader, GL_COMPILE_STATUS, &status);
-	if (status == GL_FALSE) {
+	if (compile_status == GL_FALSE) {
 		GLint infoLogLength;
-		glGetShaderiv (shader, GL_INFO_LOG_LENGTH, &infoLogLength);
-		GLchar *infoLog= new GLchar[infoLogLength];
-		glGetShaderInfoLog (shader, infoLogLength, 0, infoLog);
-		__android_log_print(ANDROID_LOG_ERROR, TAG, "Compile log:  %s",infoLog);
-		//cerr<<"Compile log: "<<infoLog<<endl;
-		delete [] infoLog;
+		glGetShaderiv(shader_object_id, GL_INFO_LOG_LENGTH, &infoLogLength);
+		GLchar log_buffer[infoLogLength];
+		glGetShaderInfoLog(shader_object_id, infoLogLength, 0, log_buffer);
+		DPRINTF("%s", log_buffer);
 	}
-	_shaders[_totalShaders++]=shader;
+	return shader_object_id;
 }
 
+GLuint link_program(const GLuint vertex_shader, const GLuint fragment_shader) {
+	GLuint program_object_id = glCreateProgram();
+	GLint link_status;
 
-void GLSLShader::CreateAndLinkProgram() {
-	_program = glCreateProgram ();
-	if (_shaders[VERTEX_SHADER] != 0) {
-		glAttachShader (_program, _shaders[VERTEX_SHADER]);
-	}
-	if (_shaders[FRAGMENT_SHADER] != 0) {
-		glAttachShader (_program, _shaders[FRAGMENT_SHADER]);
-	}
-
-	//link and check whether the program links fine
-	GLint status;
-	glLinkProgram (_program);
-	glGetProgramiv (_program, GL_LINK_STATUS, &status);
-	if (status == GL_FALSE) {
+	glAttachShader(program_object_id, vertex_shader);
+	glAttachShader(program_object_id, fragment_shader);
+	glLinkProgram(program_object_id);
+	glGetProgramiv(program_object_id, GL_LINK_STATUS, &link_status);
+	if (link_status == GL_FALSE) {
 		GLint infoLogLength;
-
-		glGetProgramiv (_program, GL_INFO_LOG_LENGTH, &infoLogLength);
-		GLchar *infoLog= new GLchar[infoLogLength];
-		glGetProgramInfoLog (_program, infoLogLength, 0, infoLog);
-		//cerr<<"Link log: "<<infoLog<<endl;
-		__android_log_print(ANDROID_LOG_ERROR, TAG, "Link log: %s",infoLog);
-		delete [] infoLog;
+		glGetProgramiv (program_object_id, GL_INFO_LOG_LENGTH, &infoLogLength);
+		GLchar infoLog[infoLogLength];
+		glGetProgramInfoLog (program_object_id, infoLogLength, 0, infoLog);
+		DPRINTF("%s", infoLog);
 	}
 
-	glDeleteShader(_shaders[VERTEX_SHADER]);
-	glDeleteShader(_shaders[FRAGMENT_SHADER]);
+	return program_object_id;
 }
 
-void GLSLShader::Use() {
-	glUseProgram(_program);
+GLuint build_program(
+    const GLchar * vertex_shader_source, const GLint vertex_shader_source_length,
+    const GLchar * fragment_shader_source, const GLint fragment_shader_source_length) {
+
+	GLuint vertex_shader = compile_shader(
+        GL_VERTEX_SHADER, vertex_shader_source, vertex_shader_source_length);
+	GLuint fragment_shader = compile_shader(
+        GL_FRAGMENT_SHADER, fragment_shader_source, fragment_shader_source_length);
+	return link_program(vertex_shader, fragment_shader);
 }
 
-void GLSLShader::UnUse() {
-	glUseProgram(0);
-}
+GLuint build_program_from_assets(const char* vertex_shader_path, const char* fragment_shader_path) {
 
-void GLSLShader::AddAttribute(const string& attribute) {
-	_attributeList[attribute]= glGetAttribLocation(_program, attribute.c_str());
-}
+	const FileData vertex_shader_source = get_asset_data(vertex_shader_path);
+	const FileData fragment_shader_source = get_asset_data(fragment_shader_path);
+	const GLuint program_object_id = build_program(
+		(const char *)vertex_shader_source.data, vertex_shader_source.data_length,
+		(const char *)fragment_shader_source.data, fragment_shader_source.data_length);
 
-//An indexer that returns the location of the attribute
-GLuint GLSLShader::operator [](const string& attribute) {
-	return _attributeList[attribute];
-}
+	release_asset_data(&vertex_shader_source);
+	release_asset_data(&fragment_shader_source);
 
-void GLSLShader::AddUniform(const string& uniform) {
-	_uniformLocationList[uniform] = glGetUniformLocation(_program, uniform.c_str());
+	return program_object_id;
 }
-
-GLuint GLSLShader::operator()(const string& uniform){
-	return _uniformLocationList[uniform];
-}
-GLuint GLSLShader::GetProgram() const {
-	return _program;
-}
-#include <fstream>
-void GLSLShader::LoadFromFile(GLenum whichShader, const string& filename){
-	ifstream fp;
-	fp.open(filename.c_str(), ios_base::in);
-	if(fp) {
-		/*string line, buffer;
-		while(getline(fp, line)) {
-			buffer.append(line);
-			buffer.append("\r\n");
-		}		*/
-		string buffer(std::istreambuf_iterator<char>(fp), (std::istreambuf_iterator<char>()));
-		//copy to source
-		LoadFromString(whichShader, buffer.c_str(), (GLint)buffer.length());
-	} else {
-		//cerr<<"Error loading shader: "<<filename<<endl;
-		__android_log_print(ANDROID_LOG_ERROR, TAG, "Error loading shader: %s",filename.c_str());
-	}
-}
-
-
-

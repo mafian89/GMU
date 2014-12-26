@@ -49,8 +49,6 @@ public class TestGLRenderer implements GLSurfaceView.Renderer {
 	private int mTexture1DataHandle;
 	private int mTexture2DataHandle;
 	
-	private boolean initialized = false;
-	
 	//Context will be probably used for loading resources
 	public TestGLRenderer(final Context activityContext) {
 		mActivityContext = activityContext;
@@ -195,31 +193,12 @@ public class TestGLRenderer implements GLSurfaceView.Renderer {
 		//FileUtils.init_asset_manager(mActivityContext.getAssets());
 		//Log.d("MainApp", "AaaAAaaaAAAaaaa");
 		
-		if(!initialized) {
-			/*final BitmapFactory.Options options = new BitmapFactory.Options();
-			options.inScaled = false;
-			options.inPreferredConfig = Config.ARGB_8888;
-			final Bitmap bitmap1 = BitmapFactory.decodeResource(mActivityContext.getResources(), R.drawable.texture, options);
-			final Bitmap bitmap2 = BitmapFactory.decodeResource(mActivityContext.getResources(), R.drawable.floor, options);
-			
-			int bytes = bitmap1.getByteCount();
-			ByteBuffer buffer = ByteBuffer.allocate(bytes); //Create a new buffer
-			bitmap1.copyPixelsToBuffer(buffer); //Move the byte data to the buffer
-			byte[] array = buffer.array(); //Get the underlying array containing the data.
-			
-			bytes = bitmap2.getByteCount();
-			ByteBuffer buffer1 = ByteBuffer.allocate(bytes); //Create a new buffer
-			bitmap1.copyPixelsToBuffer(buffer1); //Move the byte data to the buffer
-			byte[] array1 = buffer1.array(); //Get the underlying array containing the data.*/
-			
-			byte[] array1 = getByteArrayFromResource(R.drawable.texture);
-			byte[] array = getByteArrayFromResource(R.drawable.floor);
-			
-			initialized = true;
-			FileUtils.myNative(mActivityContext.getAssets());
-			rendererNativeWrapper.on_surface_created();
-			rendererNativeWrapper.injectTextures(array, array1);
-		}
+		byte[] array1 = getByteArrayFromResource(R.drawable.texture);
+		byte[] array = getByteArrayFromResource(R.drawable.floor);
+		
+		FileUtils.myNative(mActivityContext.getAssets());
+		rendererNativeWrapper.on_surface_created();
+		rendererNativeWrapper.injectTextures(array, array1);
 	}
 
 	

@@ -13,6 +13,7 @@ public class GLActivity extends Activity {
 
 	//Surface view for drawing
 	private GLSurfaceView mGLSurfaceView;
+	private boolean rendererSet;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +26,7 @@ public class GLActivity extends Activity {
 		final ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
 		final ConfigurationInfo configurationInfo = activityManager.getDeviceConfigurationInfo();
 		final boolean supportsEs2 = configurationInfo.reqGlEsVersion >= 0x20000;
+		//mGLSurfaceView.setPreserveEGLContextOnPause(true);
 		
 		if(supportsEs2) {
 			// Request an OpenGL ES 2.0 compatible context.
@@ -32,6 +34,7 @@ public class GLActivity extends Activity {
 
 			// Set the renderer
 			mGLSurfaceView.setRenderer(new TestGLRenderer(this));
+			rendererSet = true;
 		} else {
 			//Only OpenGL ES 2.0 and higher is supported
 			return;
@@ -46,7 +49,9 @@ public class GLActivity extends Activity {
 	{
 		// The activity must call the GL surface view's onResume() on activity onResume().
 		super.onResume();
-		mGLSurfaceView.onResume();
+		if (rendererSet) {
+			mGLSurfaceView.onResume();
+		}
 	}
 
 	@Override
@@ -54,7 +59,9 @@ public class GLActivity extends Activity {
 	{
 		// The activity must call the GL surface view's onPause() on activity onPause().
 		super.onPause();
-		mGLSurfaceView.onPause();
+		if (rendererSet) {
+			mGLSurfaceView.onPause();
+		}
 	}
 	
 }
