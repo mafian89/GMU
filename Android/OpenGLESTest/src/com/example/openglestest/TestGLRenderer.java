@@ -193,27 +193,42 @@ public class TestGLRenderer implements GLSurfaceView.Renderer {
 		//FileUtils.init_asset_manager(mActivityContext.getAssets());
 		//Log.d("MainApp", "AaaAAaaaAAAaaaa");
 		
-		byte[] array1 = getByteArrayFromResource(R.drawable.texture);
-		byte[] array = getByteArrayFromResource(R.drawable.floor);
+		LoadedImgResult i1 = getByteArrayFromResource(R.drawable.texture);
+		LoadedImgResult i2 = getByteArrayFromResource(R.drawable.floor);
 		
 		FileUtils.myNative(mActivityContext.getAssets());
 		rendererNativeWrapper.on_surface_created();
-		rendererNativeWrapper.injectTextures(array, array1);
+		rendererNativeWrapper.injectTextures(i1.data, i2.data,i1.width,i1.height, i2.width, i2.height);
 	}
 
 	
-	private byte[] getByteArrayFromResource(final int resourceId) {
+	private LoadedImgResult getByteArrayFromResource(final int resourceId) {
+		LoadedImgResult res = new LoadedImgResult();
 		final BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inScaled = false;
 		options.inPreferredConfig = Config.ARGB_8888;
 		final Bitmap bitmap1 = BitmapFactory.decodeResource(mActivityContext.getResources(), resourceId, options);
+		res.width = bitmap1.getWidth();
+		res.height = bitmap1.getHeight();
 		
 		int bytes = bitmap1.getByteCount();
 		ByteBuffer buffer = ByteBuffer.allocate(bytes); //Create a new buffer
 		bitmap1.copyPixelsToBuffer(buffer); //Move the byte data to the buffer
-		byte[] array = buffer.array(); //Get the underlying array containing the data.
+		//byte[] array = buffer.array(); //Get the underlying array containing the data.
+		res.data = buffer.array(); //Get the underlying array containing the data.
 		
 		bitmap1.recycle();
-		return array;
+		return res;
+	}
+	
+	private class LoadedImgResult {
+		//I don't want to use getters and setters...
+		public byte[] data;
+		public int width;
+		public int height;
+		
+		public LoadedImgResult() {
+			
+		}
 	}
 }
