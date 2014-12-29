@@ -21,9 +21,10 @@ JNIEXPORT void JNICALL Java_com_example_openglestest_rendererNativeWrapper_on_1s
 	on_surface_changed();
 }
 
-JNIEXPORT void JNICALL Java_com_example_openglestest_rendererNativeWrapper_on_1draw_1frame(
+JNIEXPORT int JNICALL Java_com_example_openglestest_rendererNativeWrapper_on_1draw_1frame(
 		JNIEnv * env, jclass cls) {
 	on_draw_frame();
+	return 50;
 }
 
 JNIEXPORT void JNICALL Java_com_example_openglestest_rendererNativeWrapper_injectTextures(

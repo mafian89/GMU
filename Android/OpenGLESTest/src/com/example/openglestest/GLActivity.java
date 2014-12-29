@@ -4,10 +4,14 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.pm.ConfigurationInfo;
+import android.graphics.Color;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
 
 public class GLActivity extends Activity {
 
@@ -15,6 +19,7 @@ public class GLActivity extends Activity {
 	private GLSurfaceView mGLSurfaceView;
 	private boolean rendererSet;
 	private TestGLRenderer renderer;
+	private static TextView textView;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +49,12 @@ public class GLActivity extends Activity {
 		
 		//And draw into it
 		setContentView(mGLSurfaceView);
+		
+		textView = new TextView(this);
+		textView.setText("My TEXT");
+		textView.setTextColor(Color.parseColor("#bdbdbd"));
+		addContentView(textView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+		//setContentView(R.layout.activity_gl);
 	}
 	
 	@Override

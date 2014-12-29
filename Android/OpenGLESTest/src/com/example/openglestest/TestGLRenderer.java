@@ -15,12 +15,15 @@ import com.example.utils.TextureHelper;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import static android.opengl.GLES20.*;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
 import android.util.Log;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 public class TestGLRenderer implements GLSurfaceView.Renderer {
 
@@ -32,7 +35,10 @@ public class TestGLRenderer implements GLSurfaceView.Renderer {
 	
 	@Override
 	public void onDrawFrame(GL10 arg0) {
-		rendererNativeWrapper.on_draw_frame();
+		Long startTime = System.currentTimeMillis();
+		Integer i = rendererNativeWrapper.on_draw_frame();
+		Long estimatedTime = System.currentTimeMillis() - startTime;
+		//Log.d("Draw", estimatedTime.toString());
 	}
 
 	@Override

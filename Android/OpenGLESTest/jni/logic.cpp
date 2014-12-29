@@ -92,6 +92,7 @@ void on_surface_changed() {
 void on_draw_frame() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	drawQuad();
+	glFinish();
 }
 
 void changeEffect(int i) {

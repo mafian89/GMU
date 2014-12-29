@@ -27,19 +27,20 @@ public final class R {
         public static final int texture=0x7f020002;
     }
     public static final class id {
-        public static final int adaptive_threshold=0x7f090001;
-        public static final int basic=0x7f090000;
-        public static final int bitwise_and=0x7f090003;
-        public static final int bitwise_not=0x7f090005;
-        public static final int bitwise_not_and=0x7f090004;
-        public static final int bitwise_or=0x7f090006;
-        public static final int bitwise_xor=0x7f090007;
-        public static final int dilation=0x7f090008;
-        public static final int erosion=0x7f090009;
-        public static final int gaussian_filter=0x7f09000a;
-        public static final int mean_filter=0x7f09000b;
-        public static final int median_filter=0x7f09000c;
-        public static final int threshold=0x7f090002;
+        public static final int adaptive_threshold=0x7f090002;
+        public static final int basic=0x7f090001;
+        public static final int bitwise_and=0x7f090004;
+        public static final int bitwise_not=0x7f090006;
+        public static final int bitwise_not_and=0x7f090005;
+        public static final int bitwise_or=0x7f090007;
+        public static final int bitwise_xor=0x7f090008;
+        public static final int dilation=0x7f090009;
+        public static final int erosion=0x7f09000a;
+        public static final int gaussian_filter=0x7f09000b;
+        public static final int mean_filter=0x7f09000c;
+        public static final int median_filter=0x7f09000d;
+        public static final int textView2=0x7f090000;
+        public static final int threshold=0x7f090003;
     }
     public static final class layout {
         public static final int activity_gl=0x7f030000;

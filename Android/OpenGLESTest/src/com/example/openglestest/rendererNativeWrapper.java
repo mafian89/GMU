@@ -9,7 +9,7 @@ public class rendererNativeWrapper {
  
     public static native void on_surface_changed(int width, int height);
  
-    public static native void on_draw_frame();
+    public static native int on_draw_frame();
     
     public static native void injectTextures(byte [] tex1, byte [] tex2, int w1, int h1, int w2, int h2);
     
