@@ -36,6 +36,9 @@ JNIEXPORT void JNICALL Java_com_example_openglestest_rendererNativeWrapper_injec
 JNIEXPORT void JNICALL Java_com_example_openglestest_rendererNativeWrapper_switchEffect
   (JNIEnv *, jclass, jint);
 
+JNIEXPORT void JNICALL Java_com_example_openglestest_rendererNativeWrapper_compileShaders
+  (JNIEnv *, jclass);
+
 #ifdef __cplusplus
 }
 #endif

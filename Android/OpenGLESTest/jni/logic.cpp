@@ -13,6 +13,11 @@
 GLuint program;
 GLuint pos_loc, uv_loc, tex1_loc, tex2_loc;
 
+SHADER_PARAMS shaderParams[NUM_OF_SHADERS];
+
+int actualProgram = 0;
+int areShadersLoaded = 0;
+
 //#define EPRINTF(...)  __android_log_print(ANDROID_LOG_ERROR,"logic",__VA_ARGS__)
 #define DPRINTF(...)  __android_log_print(ANDROID_LOG_DEBUG,"logic",__VA_ARGS__)
 
@@ -51,17 +56,17 @@ void initQuad() {
 }
 
 void drawQuad() {
-	glUseProgram(program);
+	glUseProgram(shaderParams[actualProgram].prog);
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 
-	glVertexAttribPointer(pos_loc, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GL_FLOAT), (void*)0);
-	glVertexAttribPointer(uv_loc, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GL_FLOAT), (GLvoid*)(sizeof(float)* 8));
-	glEnableVertexAttribArray(pos_loc);
-	glEnableVertexAttribArray(uv_loc);
+	glVertexAttribPointer(shaderParams[actualProgram].pos_loc, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GL_FLOAT), (void*)0);
+	glVertexAttribPointer(shaderParams[actualProgram].uv_loc, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GL_FLOAT), (GLvoid*)(sizeof(float)* 8));
+	glEnableVertexAttribArray(shaderParams[actualProgram].pos_loc);
+	glEnableVertexAttribArray(shaderParams[actualProgram].uv_loc);
 
-	glUniform1i(tex1_loc, 0);
-	glUniform1i(tex2_loc, 1);
+	glUniform1i(shaderParams[actualProgram].tex1_loc, 0);
+	glUniform1i(shaderParams[actualProgram].tex2_loc, 1);
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texID1);
@@ -72,18 +77,12 @@ void drawQuad() {
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glUseProgram(0);
 }
 
 void on_surface_created() {
-
-	program = build_program_from_assets("Shaders/basic.vs", "Shaders/threshold.frag");
-	pos_loc = glGetAttribLocation(program, "vPosition");
-	uv_loc = glGetAttribLocation(program, "vUV");
-	tex1_loc = glGetUniformLocation(program, "tex");
-	tex2_loc = glGetUniformLocation(program, "tex2");
-
-    glClearColor(1.0f, 0.0f, 0.0f, 0.0f);
-    initQuad();
+	glClearColor(1.0f, 0.0f, 0.0f, 0.0f);
+	changeEffect(actualProgram);
 }
 
 void on_surface_changed() {
@@ -96,8 +95,26 @@ void on_draw_frame() {
 }
 
 void changeEffect(int i) {
-	DPRINTF("Changing effect to: %d", i);
-	//program = build_program_from_assets("Shaders/basic.vs", "Shaders/basic.frag");
+	DPRINTF("Changing effect to: %s [%d]", effectsShaders[i],i);
+	glUseProgram(0);
+	actualProgram = i;
+}
+
+
+void compileAllShaders() {
+	if(areShadersLoaded == 0) {
+		initQuad();
+		DPRINTF("About to compile all shaders");
+		for(int i=0; i < NUM_OF_SHADERS; i++) {
+			DPRINTF("%s", effectsShaders[i]);
+			shaderParams[i].prog = build_program_from_assets("Shaders/basic.vs", effectsShaders[i]);
+			shaderParams[i].pos_loc = glGetAttribLocation(shaderParams[i].prog, "vPosition");
+			shaderParams[i].uv_loc = glGetAttribLocation(shaderParams[i].prog, "vUV");
+			shaderParams[i].tex1_loc = glGetUniformLocation(shaderParams[i].prog, "tex");
+			shaderParams[i].tex2_loc = glGetUniformLocation(shaderParams[i].prog, "tex2");
+		}
+		areShadersLoaded = 1;
+	}
 }
 
 

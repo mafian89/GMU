@@ -12,6 +12,7 @@
 
 JNIEXPORT void JNICALL Java_com_example_openglestest_rendererNativeWrapper_on_1surface_1created(
 		JNIEnv * env, jclass cls) {
+	compileAllShaders();
 	on_surface_created();
 }
 
@@ -46,6 +47,11 @@ JNIEXPORT void JNICALL Java_com_example_openglestest_rendererNativeWrapper_injec
 JNIEXPORT void JNICALL Java_com_example_openglestest_rendererNativeWrapper_switchEffect
   (JNIEnv * env, jclass clazz, jint effectId) {
 	changeEffect(effectId);
+}
+
+JNIEXPORT void JNICALL Java_com_example_openglestest_rendererNativeWrapper_compileShaders
+  (JNIEnv * env, jclass clazz) {
+	compileAllShaders();
 }
 
 void generateTexture(GLuint *id, jbyte * data, int w, int h) {

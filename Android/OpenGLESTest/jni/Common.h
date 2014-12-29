@@ -27,4 +27,5 @@ enum effectType {
 	THRESHOLD = 1,
 	BITWISE_AND = 2
 };
+
 #endif /* COMMON_H_ */

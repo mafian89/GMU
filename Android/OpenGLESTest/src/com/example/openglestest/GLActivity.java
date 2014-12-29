@@ -36,6 +36,7 @@ public class GLActivity extends Activity {
 			// Set the renderer
 			mGLSurfaceView.setRenderer(renderer);
 			rendererSet = true;
+			//rendererNativeWrapper.compileShaders();
 		} else {
 			//Only OpenGL ES 2.0 and higher is supported
 			return;
