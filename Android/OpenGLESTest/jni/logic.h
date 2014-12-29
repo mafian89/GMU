@@ -28,11 +28,21 @@ extern int areShadersLoaded;
 
 static const char* effectsShaders[] = {
 		"Shaders/basic.frag",
+		"Shaders/adaptive_threshold.frag",
 		"Shaders/threshold.frag",
-		"Shaders/bitwise_and.frag"
+		"Shaders/bitwise_and.frag",
+		"Shaders/bitwise_not_and.frag",
+		"Shaders/bitwise_not.frag",
+		"Shaders/bitwise_or.frag",
+		"Shaders/bitwise_xor.frag",
+		"Shaders/dilation.frag",
+		"Shaders/erosion.frag",
+		"Shaders/gaussian_filter.frag",
+		"Shaders/mean_filter.frag",
+		"Shaders/median_filter.frag"
 };
 
-#define NUM_OF_SHADERS 3
+#define NUM_OF_SHADERS 13
 
 typedef struct shaderParams {
 	GLuint prog;

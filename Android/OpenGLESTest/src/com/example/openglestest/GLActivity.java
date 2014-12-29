@@ -83,7 +83,40 @@ public class GLActivity extends Activity {
 			rendererNativeWrapper.switchEffect(0);
 			return true;
 		} else if (id == R.id.threshold) {
+			rendererNativeWrapper.switchEffect(2);
+			return true;
+		} else if (id == R.id.adaptive_threshold) {
 			rendererNativeWrapper.switchEffect(1);
+			return true;
+		} else if (id == R.id.bitwise_and) {
+			rendererNativeWrapper.switchEffect(3);
+			return true;
+		} else if (id == R.id.bitwise_not_and) {
+			rendererNativeWrapper.switchEffect(4);
+			return true;
+		} else if (id == R.id.bitwise_not) {
+			rendererNativeWrapper.switchEffect(5);
+			return true;
+		} else if (id == R.id.bitwise_or) {
+			rendererNativeWrapper.switchEffect(6);
+			return true;
+		} else if (id == R.id.bitwise_xor) {
+			rendererNativeWrapper.switchEffect(7);
+			return true;
+		} else if (id == R.id.dilation) {
+			rendererNativeWrapper.switchEffect(8);
+			return true;
+		} else if (id == R.id.erosion) {
+			rendererNativeWrapper.switchEffect(9);
+			return true;
+		} else if (id == R.id.gaussian_filter) {
+			rendererNativeWrapper.switchEffect(10);
+			return true;
+		} else if (id == R.id.mean_filter) {
+			rendererNativeWrapper.switchEffect(11);
+			return true;
+		} else if (id == R.id.median_filter) {
+			rendererNativeWrapper.switchEffect(12);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);

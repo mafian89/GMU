@@ -96,7 +96,6 @@ void on_draw_frame() {
 
 void changeEffect(int i) {
 	DPRINTF("Changing effect to: %s [%d]", effectsShaders[i],i);
-	glUseProgram(0);
 	actualProgram = i;
 }
 
@@ -106,7 +105,7 @@ void compileAllShaders() {
 		initQuad();
 		DPRINTF("About to compile all shaders");
 		for(int i=0; i < NUM_OF_SHADERS; i++) {
-			DPRINTF("%s", effectsShaders[i]);
+			DPRINTF("%s [%d]", effectsShaders[i],i);
 			shaderParams[i].prog = build_program_from_assets("Shaders/basic.vs", effectsShaders[i]);
 			shaderParams[i].pos_loc = glGetAttribLocation(shaderParams[i].prog, "vPosition");
 			shaderParams[i].uv_loc = glGetAttribLocation(shaderParams[i].prog, "vUV");

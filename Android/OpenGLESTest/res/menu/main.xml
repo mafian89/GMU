@@ -9,9 +9,75 @@
         android:title="@string/basic"/>
     
     <item
+        android:id="@+id/adaptive_threshold"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/adaptive_threshold"/>  
+    
+    <item
         android:id="@+id/threshold"
         android:orderInCategory="100"
         android:showAsAction="never"
-        android:title="@string/threshold"/>
+        android:title="@string/threshold"/>   
+        
+    <item
+        android:id="@+id/bitwise_and"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/bitwise_and"/>  
+        
+    <item
+        android:id="@+id/bitwise_not_and"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/bitwise_not_and"/>  
+        
+    <item
+        android:id="@+id/bitwise_not"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/bitwise_not"/>  
+        
+    <item
+        android:id="@+id/bitwise_or"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/bitwise_or"/>  
+        
+    <item
+        android:id="@+id/bitwise_xor"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/bitwise_xor"/>  
+        
+    <item
+        android:id="@+id/dilation"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/dilation"/>  
+        
+    <item
+        android:id="@+id/erosion"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/erosion"/>  
+        
+    <item
+        android:id="@+id/gaussian_filter"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/gaussian_filter"/>  
+        
+    <item
+        android:id="@+id/mean_filter"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/mean_filter"/>  
+        
+    <item
+        android:id="@+id/median_filter"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/median_filter"/>  
 
 </menu>

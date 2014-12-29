@@ -6,7 +6,20 @@
     <string name="action_settings">Settings</string>
     <string name="tmp">FUCK THIS</string>
     <string name="basic">Basic</string>
+    
+    <string name="adaptive_threshold">Adaptive Threshold</string>
     <string name="threshold">Threshold</string>
+    
     <string name="bitwise_and">Bitwise And</string>
+    <string name="bitwise_not_and">Bitwise Not And</string>
+    <string name="bitwise_not">Bitwise Not</string>
+    <string name="bitwise_or">Bitwise Or</string>
+    <string name="bitwise_xor">Bitwise Xor</string>
 
+    <string name="dilation">Dilation</string>
+    <string name="erosion">Erosion</string>
+    <string name="gaussian_filter">Gaussian Filter</string>
+    <string name="mean_filter">Mean Filter</string>
+    <string name="median_filter">Median Filter</string>
+    
 </resources>
