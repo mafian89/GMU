@@ -21,4 +21,10 @@ typedef struct {
 	const void* file_handle;
 } FileData;
 
+
+enum effectType {
+	BASIC = 0,
+	THRESHOLD = 1,
+	BITWISE_AND = 2
+};
 #endif /* COMMON_H_ */

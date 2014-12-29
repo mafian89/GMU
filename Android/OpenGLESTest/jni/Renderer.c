@@ -43,6 +43,11 @@ JNIEXPORT void JNICALL Java_com_example_openglestest_rendererNativeWrapper_injec
 
 }
 
+JNIEXPORT void JNICALL Java_com_example_openglestest_rendererNativeWrapper_switchEffect
+  (JNIEnv * env, jclass clazz, jint effectId) {
+	changeEffect(effectId);
+}
+
 void generateTexture(GLuint *id, jbyte * data, int w, int h) {
 	glGenTextures(1, id);
 	glBindTexture(GL_TEXTURE_2D, *id);

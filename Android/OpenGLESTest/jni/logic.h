@@ -18,6 +18,7 @@ void drawQuad();
 void on_surface_created();
 void on_surface_changed();
 void on_draw_frame();
+void changeEffect(int);
 
 GLuint texID1,texID2;
 

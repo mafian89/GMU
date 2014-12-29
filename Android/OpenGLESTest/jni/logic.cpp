@@ -48,7 +48,6 @@ void initQuad() {
 	glBufferSubData(GL_ARRAY_BUFFER, 8 * sizeof(float), 8*sizeof(float), uv);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	//basicShader.UnUse();
 }
 
 void drawQuad() {
@@ -95,6 +94,12 @@ void on_draw_frame() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	drawQuad();
 }
+
+void changeEffect(int i) {
+	DPRINTF("Changing effect to: %d", i);
+	//program = build_program_from_assets("Shaders/basic.vs", "Shaders/basic.frag");
+}
+
 
 
 

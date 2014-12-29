@@ -3,15 +3,15 @@
     tools:context="com.example.menutest.MainActivity" >
 
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/basic"
         android:orderInCategory="100"
         android:showAsAction="never"
-        android:title="@string/action_settings"/>
+        android:title="@string/basic"/>
     
     <item
-        android:id="@+id/tmp"
+        android:id="@+id/threshold"
         android:orderInCategory="100"
         android:showAsAction="never"
-        android:title="@string/tmp"/>
+        android:title="@string/threshold"/>
 
 </menu>
