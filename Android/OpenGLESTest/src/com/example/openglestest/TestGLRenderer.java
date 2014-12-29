@@ -26,9 +26,45 @@ public class TestGLRenderer implements GLSurfaceView.Renderer {
 
 	private final Context mActivityContext;
 	
+	private class ResTmp {
+		public float x;
+		public float y;
+		
+		public ResTmp(float x, float y) {
+			this.x = x;
+			this.y = y;
+		}
+		
+		@Override
+		public String toString() {
+			return "x: " + this.x + " y: " + this.y;
+		}
+	}
 	//Context will be probably used for loading resources
 	public TestGLRenderer(final Context activityContext) {
 		mActivityContext = activityContext;
+		int kernelSize = 5;
+
+		
+		ResTmp[] uv_offset = new ResTmp[kernelSize*kernelSize];
+		float xInc = 1.0f / 800.0f;
+		float yInc = 1.0f /600.0f;
+
+		//plnime offset
+		for (int i = 0; i < (kernelSize-1); i++) 
+		{
+			for (int j = 0; j < (kernelSize-1); j++) 
+			{
+				uv_offset[((i*kernelSize)+j)] = new ResTmp( (float)((-1.0 * xInc) + (float)((i) * xInc)) , (float)((-1.0 * yInc)+(float)((j) * yInc)) );//vec2(  , ((-1.0 * yInc)+(float(j) * yInc)) );
+			}
+
+		}
+		
+		for(int k = 0; k < kernelSize*kernelSize; k++) {
+			//Log.d("OFFSET", uv_offset[k].toString());
+		}
+		
+		
 	}
 	
 	@Override

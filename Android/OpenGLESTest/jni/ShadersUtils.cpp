@@ -15,7 +15,7 @@ GLuint compile_shader(const GLenum type, const GLchar* source, const GLint lengt
 		glGetShaderiv(shader_object_id, GL_INFO_LOG_LENGTH, &infoLogLength);
 		GLchar log_buffer[infoLogLength];
 		glGetShaderInfoLog(shader_object_id, infoLogLength, 0, log_buffer);
-		DPRINTF("%s", log_buffer);
+		DPRINTF("COMPILE: %s", log_buffer);
 	}
 	return shader_object_id;
 }
@@ -33,7 +33,7 @@ GLuint link_program(const GLuint vertex_shader, const GLuint fragment_shader) {
 		glGetProgramiv (program_object_id, GL_INFO_LOG_LENGTH, &infoLogLength);
 		GLchar infoLog[infoLogLength];
 		glGetProgramInfoLog (program_object_id, infoLogLength, 0, infoLog);
-		DPRINTF("%s", infoLog);
+		DPRINTF("LINK: %s", infoLog);
 	}
 
 	return program_object_id;

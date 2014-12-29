@@ -77,10 +77,10 @@ void drawQuad() {
 
 void on_surface_created() {
 
-	program = build_program_from_assets("Shaders/texture_viewer_vertex.glsl", "Shaders/texture_viewer_fragment.glsl");
+	program = build_program_from_assets("Shaders/basic.vs", "Shaders/threshold.frag");
 	pos_loc = glGetAttribLocation(program, "vPosition");
 	uv_loc = glGetAttribLocation(program, "vUV");
-	tex1_loc = glGetUniformLocation(program, "tex1");
+	tex1_loc = glGetUniformLocation(program, "tex");
 	tex2_loc = glGetUniformLocation(program, "tex2");
 
     glClearColor(1.0f, 0.0f, 0.0f, 0.0f);

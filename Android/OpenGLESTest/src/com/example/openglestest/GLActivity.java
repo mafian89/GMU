@@ -6,12 +6,15 @@ import android.content.Context;
 import android.content.pm.ConfigurationInfo;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 
 public class GLActivity extends Activity {
 
 	//Surface view for drawing
 	private GLSurfaceView mGLSurfaceView;
 	private boolean rendererSet;
+	private TestGLRenderer renderer;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -29,9 +32,9 @@ public class GLActivity extends Activity {
 		if(supportsEs2) {
 			// Request an OpenGL ES 2.0 compatible context.
 			mGLSurfaceView.setEGLContextClientVersion(2);
-
+			renderer = new TestGLRenderer(this);
 			// Set the renderer
-			mGLSurfaceView.setRenderer(new TestGLRenderer(this));
+			mGLSurfaceView.setRenderer(renderer);
 			rendererSet = true;
 		} else {
 			//Only OpenGL ES 2.0 and higher is supported
@@ -60,6 +63,25 @@ public class GLActivity extends Activity {
 		if (rendererSet) {
 			mGLSurfaceView.onPause();
 		}
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.main, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle action bar item clicks here. The action bar will
+		// automatically handle clicks on the Home/Up button, so long
+		// as you specify a parent activity in AndroidManifest.xml.
+		int id = item.getItemId();
+		if (id == R.id.action_settings) {
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 	
 }
