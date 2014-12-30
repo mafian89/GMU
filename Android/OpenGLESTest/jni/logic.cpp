@@ -14,6 +14,7 @@ GLuint program;
 GLuint pos_loc, uv_loc, tex1_loc, tex2_loc;
 
 SHADER_PARAMS shaderParams[NUM_OF_SHADERS];
+//Hardcoded - IMPORTANT!!
 float arr[2*1920*1080];
 
 int actualProgram = 0;
@@ -59,6 +60,7 @@ void initQuad() {
 }
 
 void drawQuad() {
+	//int actualProgram = 0;
 	glUseProgram(shaderParams[actualProgram].prog);
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -98,11 +100,15 @@ void on_draw_frame() {
 	//Disable depth test
 	glDisable(GL_DEPTH_TEST);
 
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, texID1);
+
 	//computeHistogram();
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texID1);
 
+	//TEMP CHANGE
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, texID2);
 
@@ -117,14 +123,34 @@ void computeHistogram() {
 	glBlendFunc(GL_ONE, GL_ZERO);
 	//Additive
 	glBlendEquation(GL_FUNC_ADD);
+	glUseProgram(shaderParams[actualProgram].prog);
+
+	glBindBuffer(GL_ARRAY_BUFFER, HistogramVBO);
+
+	glVertexAttribPointer(shaderParams[actualProgram].pos_loc, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GL_FLOAT), (void*)0);
+	glEnableVertexAttribArray(shaderParams[actualProgram].pos_loc);
+
+	glUniform1i(shaderParams[actualProgram].tex1_loc, 0);
+	glUniform1i(shaderParams[actualProgram].tex2_loc, 1);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, FBO);
-
 	//Compute histogram
+	glDrawArrays(GL_POINTS, 0, textureWidth*textureHeight);
 
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glUseProgram(0);
 	//Disable blending
 	glDisable(GL_BLEND);
+
+	/*int hPixels[256*3];
+	glReadPixels(0, 0, 256, 1, GL_RGB, GL_UNSIGNED_BYTE, hPixels);
+	for(int j = 0; j < 256*3; j++) {
+		if((j % 3) == 0)
+			DPRINTF("%d",hPixels[j]);
+	}*/
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 void changeEffect(int i) {
@@ -140,11 +166,6 @@ void compileAllShaders() {
 		DPRINTF("About to compile all shaders");
 		for(int i=0; i < NUM_OF_SHADERS; i++) {
 			DPRINTF("%s %s [%d]", effectsShaders[i][0],effectsShaders[i][1],i);
-			/*shaderParams[i].prog = build_program_from_assets("Shaders/basic.vs", effectsShaders[i]);
-			shaderParams[i].pos_loc = glGetAttribLocation(shaderParams[i].prog, "vPosition");
-			shaderParams[i].uv_loc = glGetAttribLocation(shaderParams[i].prog, "vUV");
-			shaderParams[i].tex1_loc = glGetUniformLocation(shaderParams[i].prog, "tex");
-			shaderParams[i].tex2_loc = glGetUniformLocation(shaderParams[i].prog, "tex2");*/
 			compileAndSetTargetedShader(i);
 		}
 		areShadersLoaded = 1;
@@ -169,6 +190,7 @@ void initFBO() {
 
 
 	DPRINTF("Checking framebuffer status...");
+	bool ok = true;
 	// check FBO status
 	GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
 	switch(status)
@@ -179,29 +201,38 @@ void initFBO() {
 
 	case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
 		EPRINTF("Framebuffer incomplete: Attachment is NOT complete.");
+		ok = false;
 		break ;
 
 	case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
 		EPRINTF("Framebuffer incomplete: No image is attached to FBO.");
+		ok = false;
 		break ;
 
 	case GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS:
 		EPRINTF("Framebuffer incomplete: Attached images have different dimensions.");
+		ok = false;
 		break ;
 
 	case GL_FRAMEBUFFER_UNSUPPORTED:
 		EPRINTF("Unsupported by FBO implementation.");
+		ok = false;
 		break ;
 
 	default:
 		EPRINTF("Unknown error.");
+		ok = false;
 		break ;
 	}
 
 	glBindFramebuffer (GL_FRAMEBUFFER, 0);
 
-}
+	if(!ok) {
+		return;
+	}
 
+}
+//GL_HALF_FLOAT_OES
 void initRenderTex() {
 	glGenTextures (1, &histogramTex);
 	glBindTexture (GL_TEXTURE_2D, histogramTex);

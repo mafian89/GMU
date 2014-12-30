@@ -32,7 +32,7 @@ int textureWidth,textureHeight;
 extern int actualProgram;
 extern int areShadersLoaded;
 
-#define NUM_OF_SHADERS 13
+#define NUM_OF_SHADERS 14
 
 static const char* effectsShaders[][NUM_OF_SHADERS] = {
 		{"Shaders/basic.vs", "Shaders/basic.frag"},
@@ -47,7 +47,8 @@ static const char* effectsShaders[][NUM_OF_SHADERS] = {
 		{"Shaders/basic.vs", "Shaders/erosion.frag"},
 		{"Shaders/basic.vs", "Shaders/gaussian_filter.frag"},
 		{"Shaders/basic.vs", "Shaders/mean_filter.frag"},
-		{"Shaders/basic.vs", "Shaders/median_filter.frag"}
+		{"Shaders/basic.vs", "Shaders/median_filter.frag"},
+		{"Shaders/histogram.vs", "Shaders/histogram.frag"}
 };
 
 

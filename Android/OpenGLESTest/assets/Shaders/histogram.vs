@@ -1,50 +1,30 @@
-varying vec2 uv;
+attribute vec2 vPosition;
+attribute vec2 vUV; //Unused - empty
 
-uniform sampler2D tex;		//textura
-uniform sampler2D tex2;		//maska
+varying vec2 uv; //Unused - empty
 
-uniform bool depth;	
+uniform sampler2D tex;
 
-const float textureWidth = float(1080.0);
+const float textureWidth = float(1080.0); 
 const float textureHeight = float(1920.0);
 
-const int threshold = 127;
-
-const float minValue = 0.0;
-const float maxValue = 1.0;
-
-const bool inverseTresh = true;
-
-
-//threshold
-void main(void)
+void main()
 {
+	//Misto gl_Vertex budu brat z attribute vec2 position
+	vec2 tc = vec2(vPosition.x / textureWidth, vPosition.y / textureHeight);
+	//Barvicka
+	vec3 color = texture2D(tex, tc.st).rgb;
+ 	
+	//Do grayscale - 0 - 1
+	float greyscale = 0.299 * color.r + 0.587 * color.g + 0.114 * color.b;
 
-    //greyscale image
-    float grey = dot(texture2D(tex, uv).rgb, vec3(0.299, 0.587, 0.114));
+	//Do jakeho binu, mi to flakne
+	float Xposition = greyscale * 255.0;
+	
+	vec2 Vertex = vec2(0);
+	//Prevod z prostoru 0,1 do prostoru -1,1
+	Vertex.x = (Xposition - 256.0 / 2.0) / (256.0 / 2.0);
 
-    int greyInt = int(grey * 255.0);
-
-    if (greyInt >= threshold) 
-    {   
-        if (! inverseTresh) {
-            grey = maxValue;
-        }
-        else {
-            grey = minValue;
-        }
-    }
-    else 
-    {
-    	if (! inverseTresh) {
-            grey = minValue;
-        }
-        else {
-            grey = maxValue;
-        }
-    }
-    
-
-    gl_FragColor = vec4(grey);
-    
+	//y = -1.0 protoze je to v NDC
+	gl_Position = vec4(Vertex.x, -1.0, 0.0, 1.0);
 }
