@@ -55,8 +55,8 @@ public class TestGLRenderer implements GLSurfaceView.Renderer {
 		LoadedImgResult i2 = getByteArrayFromResource(R.drawable.floor);
 		
 		FileUtils.myNative(mActivityContext.getAssets());
-		rendererNativeWrapper.on_surface_created();
 		rendererNativeWrapper.injectTextures(i1.data, i2.data,i1.width,i1.height, i2.width, i2.height);
+		rendererNativeWrapper.on_surface_created();
 	}
 
 	
