@@ -18,11 +18,14 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
+import android.graphics.Point;
 import static android.opengl.GLES20.*;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
 import android.util.Log;
+import android.view.Display;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 public class TestGLRenderer implements GLSurfaceView.Renderer {
@@ -54,9 +57,14 @@ public class TestGLRenderer implements GLSurfaceView.Renderer {
 		LoadedImgResult i1 = getByteArrayFromResource(R.drawable.texture);
 		LoadedImgResult i2 = getByteArrayFromResource(R.drawable.floor);
 		
+		WindowManager wm = (WindowManager) mActivityContext.getSystemService(Context.WINDOW_SERVICE);
+		Display display = wm.getDefaultDisplay();
+		Point size = new Point();
+		display.getSize(size);
+		
 		FileUtils.myNative(mActivityContext.getAssets());
 		rendererNativeWrapper.injectTextures(i1.data, i2.data,i1.width,i1.height, i2.width, i2.height);
-		rendererNativeWrapper.on_surface_created();
+		rendererNativeWrapper.on_surface_created(size.x,size.y);
 	}
 
 	

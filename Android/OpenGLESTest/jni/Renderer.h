@@ -12,7 +12,7 @@ extern "C" {
  * Signature: ()V
  */
 JNIEXPORT void JNICALL Java_com_example_openglestest_rendererNativeWrapper_on_1surface_1created
-  (JNIEnv *, jclass);
+  (JNIEnv *, jclass,jint,jint);
 
 /*
  * Class:     com_example_openglestest_rendererNativeWrapper

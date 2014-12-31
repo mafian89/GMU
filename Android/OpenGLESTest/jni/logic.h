@@ -29,6 +29,7 @@ void computeHistogram();
 
 GLuint texID1,texID2,histogramTex,renderTex;
 int textureWidth,textureHeight;
+int displayWidth, displayHeight;
 extern int actualProgram;
 extern int areShadersLoaded;
 

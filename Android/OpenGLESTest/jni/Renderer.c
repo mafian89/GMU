@@ -12,7 +12,11 @@
 #define DPRINTF(...)  __android_log_print(ANDROID_LOG_DEBUG,"Renderer",__VA_ARGS__)
 
 JNIEXPORT void JNICALL Java_com_example_openglestest_rendererNativeWrapper_on_1surface_1created(
-		JNIEnv * env, jclass cls) {
+		JNIEnv * env, jclass cls, jint resx, jint resy) {
+
+	DPRINTF("Display resolution: %d x %d",resx,resy);
+	displayWidth = resx;
+	displayHeight = resy;
 	//initPointVBO(textureWidth,textureHeight);
 	initFBO();
 	compileAllShaders();

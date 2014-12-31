@@ -115,21 +115,21 @@ void on_draw_frame() {
 	glClear(GL_COLOR_BUFFER_BIT);
 	//Disable depth test
 	glDisable(GL_DEPTH_TEST);
-
+	glViewport(0,0, displayWidth, displayHeight);
 	//computeHistogram();
 	//Comment from here
-	glBindFramebuffer(GL_FRAMEBUFFER, FBO);
-	//glViewport(0,0, textureWidth, textureHeight);
+	/*glBindFramebuffer(GL_FRAMEBUFFER, FBO);
+	//glViewport(0,0, displayWidth, displayHeight);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texID1);
 	drawQuad(actualProgram);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);*/
 	//To here
 
 	//glClear ( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 	glActiveTexture(GL_TEXTURE0);
-	//glBindTexture(GL_TEXTURE_2D, texID1); //Uncoment this in case of problems
-	glBindTexture(GL_TEXTURE_2D, renderTex); //Comment this in case of problems
+	glBindTexture(GL_TEXTURE_2D, texID1); //Uncoment this in case of problems
+	//glBindTexture(GL_TEXTURE_2D, renderTex); //Comment this in case of problems
 
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, texID2);
@@ -184,9 +184,13 @@ void compileAllShaders() {
 	if(areShadersLoaded == 0) {
 		initQuad();
 		DPRINTF("About to compile all shaders");
-
-		float xInc = 1.0 / 1080.0/*(float) textureWidth*/;
-		float yInc = 1.0 / 1920.0/*(float) textureHeight*/;
+		/*
+		 * May we should change this to display width & height
+		 * 2014-12-31: 	Changed 1080 -> displayWidth
+		 * 				Changed 1920 -> displayHeight
+		 */
+		float xInc = 1.0 / displayWidth/*(float) textureWidth*/;
+		float yInc = 1.0 / displayHeight/*(float) textureHeight*/;
 
 		//plnime offset
 		for (int i = 0; i < kernelSize3; i++)
@@ -299,9 +303,10 @@ void initRenderTex() {
 	//glTexImage2D (GL_TEXTURE_2D, 0, GL_RGB16F_EXT , 256, 1, 0, GL_RGB, GL_FLOAT, 0); //needs GL_EXT_color_buffer_half_float extension
 	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
+	//Render texture should have the same res as display
 	glGenTextures (1, &renderTex);
 	glBindTexture (GL_TEXTURE_2D, renderTex);
-	glTexImage2D (GL_TEXTURE_2D, 0, GL_RGBA , textureWidth, textureHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+	glTexImage2D (GL_TEXTURE_2D, 0, GL_RGBA , displayWidth, displayHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
 	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
