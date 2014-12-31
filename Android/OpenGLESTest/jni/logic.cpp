@@ -117,29 +117,88 @@ void on_draw_frame() {
 	//Disable depth test
 	glDisable(GL_DEPTH_TEST);
 	glViewport(0,0, displayWidth, displayHeight);
-	//computeHistogram();
-	//Comment from here
-	glBindFramebuffer(GL_FRAMEBUFFER, FBO);
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texID1);
 
-	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, texID2);
-	//drawQuad(0,0); //debug
-	drawQuad(13,0);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	//To here
+	if (actualProgram == 16) {//closing
+		//computeHistogram();
+		//Comment from here
+		glBindFramebuffer(GL_FRAMEBUFFER, FBO);
 
-	//glClear ( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-	glActiveTexture(GL_TEXTURE0);
-	//glBindTexture(GL_TEXTURE_2D, texID1); //Uncoment this in case of problems
-	glBindTexture(GL_TEXTURE_2D, renderTex); //Comment this in case of problems
+		//texture1 - image
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, texID1);
 
-	glActiveTexture(GL_TEXTURE1);
-	//glBindTexture(GL_TEXTURE_2D, texID2); //Uncoment this in case of problems
-	glBindTexture(GL_TEXTURE_2D, renderTex);
-	//drawQuad(actualProgram,1); //actualProgram
-	drawQuad(14,1);
+		//texture2 - mask
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, texID2);
+		//drawQuad(0,0); //debug
+		drawQuad(13,0);	//dilation
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		//To here
+
+		//glClear ( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+		glActiveTexture(GL_TEXTURE0);
+		//glBindTexture(GL_TEXTURE_2D, texID1); //Uncoment this in case of problems
+		glBindTexture(GL_TEXTURE_2D, renderTex); //Comment this in case of problems
+
+		glActiveTexture(GL_TEXTURE1);
+		//glBindTexture(GL_TEXTURE_2D, texID2); //Uncoment this in case of problems
+		glBindTexture(GL_TEXTURE_2D, renderTex);
+		//drawQuad(actualProgram,1); //actualProgram
+		drawQuad(14,1);	//erosion
+	} else if (actualProgram == 15) {//opening
+		//computeHistogram();
+		//Comment from here
+		glBindFramebuffer(GL_FRAMEBUFFER, FBO);
+
+		//texture1 - image
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, texID1);
+
+		//texture2 - mask
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, texID2);
+		//drawQuad(0,0); //debug
+		drawQuad(14,0);	//erosion
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		//To here
+
+		//glClear ( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+		glActiveTexture(GL_TEXTURE0);
+		//glBindTexture(GL_TEXTURE_2D, texID1); //Uncoment this in case of problems
+		glBindTexture(GL_TEXTURE_2D, renderTex); //Comment this in case of problems
+
+		glActiveTexture(GL_TEXTURE1);
+		//glBindTexture(GL_TEXTURE_2D, texID2); //Uncoment this in case of problems
+		glBindTexture(GL_TEXTURE_2D, renderTex);
+		//drawQuad(actualProgram,1); //actualProgram
+		drawQuad(13,1); //dilation
+	} else {
+		//computeHistogram();
+		//Comment from here
+		//glBindFramebuffer(GL_FRAMEBUFFER, FBO);
+
+		//texture1 - image
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, texID1);
+
+		//texture2 - mask
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, texID2);
+		drawQuad(0,0);
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		//To here
+
+		//glClear ( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, texID1); //Uncoment this in case of problems
+		//glBindTexture(GL_TEXTURE_2D, renderTex); //Comment this in case of problems
+
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, texID2); //Uncoment this in case of problems
+		//glBindTexture(GL_TEXTURE_2D, renderTex);
+		drawQuad(actualProgram,1); //actualProgram
+		//drawQuad(14,1);
+	}
 	glFinish();
 }
 

@@ -51,8 +51,9 @@ public class GLActivity extends Activity {
 		setContentView(mGLSurfaceView);
 		
 		textView = new TextView(this);
-		textView.setText("My TEXT");
-		textView.setTextColor(Color.parseColor("#bdbdbd"));
+		textView.setText("Input Image 1");
+		//textView.setTextColor(Color.parseColor("#bdbdbd"));
+		textView.setTextColor(Color.parseColor("#ff0508"));
 		addContentView(textView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 		//setContentView(R.layout.activity_gl);
 	}
