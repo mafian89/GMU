@@ -122,7 +122,7 @@ void on_draw_frame() {
 	glBindFramebuffer(GL_FRAMEBUFFER, FBO);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texID1);
-	drawQuad(actualProgram,0);
+	drawQuad(0,0);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	//To here
 
