@@ -3,21 +3,19 @@ varying vec2 uv;
 uniform sampler2D tex;		//textura
 uniform sampler2D tex2;		//maska
 
-uniform bool depth;	
-
-const float textureWidth = float(1080.0);
-const float textureHeight = float(1920.0);
 
 const int threshold = 127;
 
 const float minValue = 0.0;
 const float maxValue = 1.0;
 
-const bool inverseTresh = true;
+const bool inverseTresh = false;
 
-const int kernelSize = 5;
+const int kernelSize = 3;
 
-uniform vec2 uv_offset[kernelSize * kernelSize];
+uniform vec2 uv_offset3[9];
+uniform vec2 uv_offset5[25];
+uniform vec2 uv_offset11[121];
 
 //threshold
 void main(void)

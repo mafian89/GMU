@@ -5,7 +5,9 @@ uniform sampler2D tex2;     //maska
 
 const int kernelSize = 5;
 
-uniform vec2 uv_offset[kernelSize * kernelSize];
+uniform vec2 uv_offset3[9];
+uniform vec2 uv_offset5[25];
+uniform vec2 uv_offset11[121];
 
 /*const float gaussian[49] = float[49](0.000036, 0.000363, 0.001446, 0.002291, 0.001446, 0.000363, 0.000036, 
 									 0.000363, 0.003676, 0.014662, 0.023226, 0.014662, 0.003676, 0.000363, 
@@ -24,7 +26,7 @@ void main(void)
 
     for (int i = 0; i < (kernelSize * kernelSize); i++) 
     {
-        sample[i] = texture2D(tex, uv + uv_offset[i]);
+        sample[i] = texture2D(tex, uv + uv_offset5[i]);
     }
     
     //Gaussian 3x3
