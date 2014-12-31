@@ -122,7 +122,11 @@ void on_draw_frame() {
 	glBindFramebuffer(GL_FRAMEBUFFER, FBO);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texID1);
-	drawQuad(0,0);
+
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, texID2);
+	//drawQuad(0,0); //debug
+	drawQuad(13,0);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	//To here
 
@@ -132,8 +136,10 @@ void on_draw_frame() {
 	glBindTexture(GL_TEXTURE_2D, renderTex); //Comment this in case of problems
 
 	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, texID2);
-	drawQuad(actualProgram,1);
+	//glBindTexture(GL_TEXTURE_2D, texID2); //Uncoment this in case of problems
+	glBindTexture(GL_TEXTURE_2D, renderTex);
+	//drawQuad(actualProgram,1); //actualProgram
+	drawQuad(14,1);
 	glFinish();
 }
 
