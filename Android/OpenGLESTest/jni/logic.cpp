@@ -19,9 +19,23 @@ float arr[2*1920*1080];
 int actualProgram = 0;
 int areShadersLoaded = 0;
 
-int kernelSize = 5;//11;
-int kernelLength = 25;//121;
-float uv_offset[50];//uv_offset[242];
+int kernelSize3 = 3;//11;
+int kernelLength3 = 9;//121;
+float uv_offset3[18];//uv_offset[242];
+
+
+int kernelSize5 = 5;//11;
+int kernelLength5 = 25;//121;
+float uv_offset5[50];//uv_offset[242];
+
+
+int kernelSize11 = 11;
+int kernelLength11 = 121;
+float uv_offset11[242];
+
+
+
+
 
 #define EPRINTF(...)  __android_log_print(ANDROID_LOG_ERROR,"logic",__VA_ARGS__)
 #define DPRINTF(...)  __android_log_print(ANDROID_LOG_DEBUG,"logic",__VA_ARGS__)
@@ -75,7 +89,9 @@ void drawQuad() {
 	glUniform1i(shaderParams[actualProgram].tex1_loc, 0);
 	glUniform1i(shaderParams[actualProgram].tex2_loc, 1);
 
-	glUniform2fv(shaderParams[actualProgram].offset_loc, kernelLength, uv_offset);
+	glUniform2fv(shaderParams[actualProgram].offset3_loc, kernelLength3, uv_offset3);
+	glUniform2fv(shaderParams[actualProgram].offset5_loc, kernelLength5, uv_offset5);
+	glUniform2fv(shaderParams[actualProgram].offset11_loc, kernelLength11, uv_offset11);
 
 	/*glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texID1);
@@ -167,12 +183,38 @@ void compileAllShaders() {
 		float yInc = 1.0 / 1920.0/*(float) textureHeight*/;
 
 		//plnime offset
-		for (int i = 0; i < kernelSize; i++)
+		for (int i = 0; i < kernelSize3; i++)
 		{
-			for (int j = 0; j < kernelSize; j++)
+			for (int j = 0; j < kernelSize3; j++)
 			{
-				uv_offset[(((i*kernelSize)+j)*2)+0] = (-1.0 * xInc) + ((float)i * xInc);
-				uv_offset[(((i*kernelSize)+j)*2)+1] = (-1.0 * yInc) + ((float)j * yInc);
+				uv_offset3[(((i*kernelSize3)+j)*2)+0] = (-1.0 * xInc) + ((float)i * xInc);
+				uv_offset3[(((i*kernelSize3)+j)*2)+1] = (-1.0 * yInc) + ((float)j * yInc);
+
+				//DPRINTF("x: %f",uv_offset[(((i*kernelSize)+j)*2)+0]);
+				//DPRINTF("y: %f",uv_offset[(((i*kernelSize)+j)*2)+1]);
+			}
+
+		}
+
+		for (int i = 0; i < kernelSize5; i++)
+		{
+			for (int j = 0; j < kernelSize5; j++)
+			{
+				uv_offset5[(((i*kernelSize5)+j)*2)+0] = (-1.0 * xInc) + ((float)i * xInc);
+				uv_offset5[(((i*kernelSize5)+j)*2)+1] = (-1.0 * yInc) + ((float)j * yInc);
+
+				//DPRINTF("x: %f",uv_offset[(((i*kernelSize)+j)*2)+0]);
+				//DPRINTF("y: %f",uv_offset[(((i*kernelSize)+j)*2)+1]);
+			}
+
+		}
+
+		for (int i = 0; i < kernelSize11; i++)
+		{
+			for (int j = 0; j < kernelSize11; j++)
+			{
+				uv_offset11[(((i*kernelSize11)+j)*2)+0] = (-1.0 * xInc) + ((float)i * xInc);
+				uv_offset11[(((i*kernelSize11)+j)*2)+1] = (-1.0 * yInc) + ((float)j * yInc);
 
 				//DPRINTF("x: %f",uv_offset[(((i*kernelSize)+j)*2)+0]);
 				//DPRINTF("y: %f",uv_offset[(((i*kernelSize)+j)*2)+1]);
@@ -194,7 +236,9 @@ void compileAndSetTargetedShader(int i) {
 	shaderParams[i].uv_loc = glGetAttribLocation(shaderParams[i].prog, "vUV");
 	shaderParams[i].tex1_loc = glGetUniformLocation(shaderParams[i].prog, "tex");
 	shaderParams[i].tex2_loc = glGetUniformLocation(shaderParams[i].prog, "tex2");
-    shaderParams[i].offset_loc = glGetUniformLocation(shaderParams[i].prog, "uv_offset");
+    shaderParams[i].offset3_loc = glGetUniformLocation(shaderParams[i].prog, "uv_offset3");
+    shaderParams[i].offset5_loc = glGetUniformLocation(shaderParams[i].prog, "uv_offset5");
+    shaderParams[i].offset11_loc = glGetUniformLocation(shaderParams[i].prog, "uv_offset11");
 	//DPRINTF("%s %s", effectsShaders[i][0], effectsShaders[i][1]);
 }
 

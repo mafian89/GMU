@@ -3,12 +3,11 @@ varying vec2 uv;
 uniform sampler2D tex;		//textura
 uniform sampler2D tex2;		//maska
 
-uniform bool depth;	
+const int kernelSize = 3;
 
-
-const int kernelSize = 5;
-
-uniform vec2 uv_offset[kernelSize * kernelSize];
+uniform vec2 uv_offset3[9];
+uniform vec2 uv_offset5[25];
+uniform vec2 uv_offset11[121];
 
 /*vec4 median(vec4 sample[kernelSize * kernelSize])
 {
@@ -32,27 +31,12 @@ uniform vec2 uv_offset[kernelSize * kernelSize];
 //median filter
 void main(void)
 {
-
-	/*
-	vec2 uv_offset[kernelSize * kernelSize];
-	float xInc = 1.0 / float(textureWidth);
-	float yInc = 1.0 / float(textureHeight);
-
-	//plnime offset
-	for (int i = 0; i < kernelSize; i++) 
-	{
-		for (int j = 0; j < kernelSize; j++) 
-		{
-			uv_offset[((i*kernelSize)+j)] = vec2( ((-1.0 * xInc) + (float(i) * xInc)) , ((-1.0 * yInc)+(float(j) * yInc)) );
-		}
-	}	
-	*/	
-		
+	
     vec4 sample[kernelSize * kernelSize];
 
 	for (int i = 0; i < (kernelSize * kernelSize); i++) 
 	{
-		sample[i] = texture2D(tex, uv + uv_offset[i]);
+		sample[i] = texture2D(tex, uv + uv_offset3[i]);
 	}
 	
 	int midIndex = int(((kernelSize * kernelSize)-1)/2);

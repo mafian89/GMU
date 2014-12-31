@@ -32,7 +32,9 @@ int textureWidth,textureHeight;
 extern int actualProgram;
 extern int areShadersLoaded;
 
-extern int kernelSize, kernelLength;
+extern int kernelSize3, kernelLength3;
+extern int kernelSize5, kernelLength5;
+extern int kernelSize11, kernelLength11;
 
 #define NUM_OF_SHADERS 20
 
@@ -62,7 +64,8 @@ static const char* effectsShaders[][NUM_OF_SHADERS] = {
 
 typedef struct shaderParams {
 	GLuint prog;
-	GLuint pos_loc, uv_loc, tex1_loc, tex2_loc, offset_loc;
+	GLuint pos_loc, uv_loc, tex1_loc, tex2_loc;
+	GLuint offset3_loc, offset5_loc, offset11_loc;
 }SHADER_PARAMS;
 #endif /* LOGIC_H_ */
 
