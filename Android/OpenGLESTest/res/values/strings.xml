@@ -5,21 +5,33 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="tmp">FUCK THIS</string>
-    <string name="basic">Basic</string>
+    <string name="basic">Input Image 1</string>
+    <string name="basic_mask">Input Image 2</string>
     
-    <string name="adaptive_threshold">Adaptive Threshold</string>
+    <string name="adaptive_threshold_mean">Adaptive Threshold  (mean) [11x11]</string>
+    <string name="adaptive_threshold_meanC">Adaptive Threshold (mean - C) [11x11]</string>
+    <string name="adaptive_threshold_median">Adaptive Threshold (median) [3x3]</string>
+    <string name="adaptive_threshold_minMax">Adaptive Threshold ((min + max) / 2) [11x11]</string>
     <string name="threshold">Threshold</string>
     
-    <string name="bitwise_and">Bitwise And</string>
-    <string name="bitwise_not_and">Bitwise Not And</string>
-    <string name="bitwise_not">Bitwise Not</string>
-    <string name="bitwise_or">Bitwise Or</string>
-    <string name="bitwise_xor">Bitwise Xor</string>
+    <string name="bitwise_and">Bitwise AND</string>
+    <string name="bitwise_nand">Bitwise NAND</string>
+    <string name="bitwise_not">Bitwise NOT</string>
+    <string name="bitwise_or">Bitwise OR</string>
+    <string name="bitwise_nor">Bitwise NOR</string>
+    <string name="bitwise_xor">Bitwise XOR</string>
 
-    <string name="dilation">Dilation</string>
-    <string name="erosion">Erosion</string>
-    <string name="gaussian_filter">Gaussian Filter</string>
-    <string name="mean_filter">Mean Filter</string>
-    <string name="median_filter">Median Filter</string>
+    <string name="dilation">Dilation [3x3]</string>
+    <string name="erosion">Erosion [3x3]</string>
+    <string name="opening">Opening [3x3]</string>
+    <string name="closing">Closing [3x3]</string>
+    
+    <string name="gaussian_filter">Gaussian Filter [5x5]</string>
+    <string name="mean_filter">Mean Filter [11x11]</string>
+    <string name="median_filter">Median Filter [3x3]</string>
+
+    
+   
+
     
 </resources>

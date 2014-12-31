@@ -32,29 +32,37 @@ int textureWidth,textureHeight;
 extern int actualProgram;
 extern int areShadersLoaded;
 
-#define NUM_OF_SHADERS 14
+extern int kernelSize, kernelLength;
+
+#define NUM_OF_SHADERS 20
 
 static const char* effectsShaders[][NUM_OF_SHADERS] = {
 		{"Shaders/basic.vs", "Shaders/basic.frag"},
-		{"Shaders/basic.vs", "Shaders/adaptive_threshold.frag"},
+		{"Shaders/basic.vs", "Shaders/basic_mask.frag"},
 		{"Shaders/basic.vs", "Shaders/threshold.frag"},
+		{"Shaders/basic.vs", "Shaders/adaptive_threshold_mean.frag"},
+		{"Shaders/basic.vs", "Shaders/adaptive_threshold_meanC.frag"},
+		{"Shaders/basic.vs", "Shaders/adaptive_threshold_median.frag"},
+		{"Shaders/basic.vs", "Shaders/adaptive_threshold_minMax.frag"},
 		{"Shaders/basic.vs", "Shaders/bitwise_and.frag"},
-		{"Shaders/basic.vs", "Shaders/bitwise_not_and.frag"},
-		{"Shaders/basic.vs", "Shaders/bitwise_not.frag"},
 		{"Shaders/basic.vs", "Shaders/bitwise_or.frag"},
 		{"Shaders/basic.vs", "Shaders/bitwise_xor.frag"},
+		{"Shaders/basic.vs", "Shaders/bitwise_not.frag"},
+		{"Shaders/basic.vs", "Shaders/bitwise_nand.frag"},
+		{"Shaders/basic.vs", "Shaders/bitwise_nor.frag"},
 		{"Shaders/basic.vs", "Shaders/dilation.frag"},
 		{"Shaders/basic.vs", "Shaders/erosion.frag"},
-		{"Shaders/basic.vs", "Shaders/gaussian_filter.frag"},
+		{"Shaders/basic.vs", "Shaders/opening.frag"},
+		{"Shaders/basic.vs", "Shaders/closing.frag"},
 		{"Shaders/basic.vs", "Shaders/mean_filter.frag"},
 		{"Shaders/basic.vs", "Shaders/median_filter.frag"},
-		{"Shaders/histogram.vs", "Shaders/histogram.frag"}
+		{"Shaders/basic.vs", "Shaders/gaussian_filter.frag"}
 };
 
 
 typedef struct shaderParams {
 	GLuint prog;
-	GLuint pos_loc, uv_loc, tex1_loc, tex2_loc;
+	GLuint pos_loc, uv_loc, tex1_loc, tex2_loc, offset_loc;
 }SHADER_PARAMS;
 #endif /* LOGIC_H_ */
 

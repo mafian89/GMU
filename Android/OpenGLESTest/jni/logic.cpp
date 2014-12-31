@@ -14,11 +14,14 @@ GLuint program;
 GLuint pos_loc, uv_loc, tex1_loc, tex2_loc;
 
 SHADER_PARAMS shaderParams[NUM_OF_SHADERS];
-//Hardcoded - IMPORTANT!!
 float arr[2*1920*1080];
 
 int actualProgram = 0;
 int areShadersLoaded = 0;
+
+int kernelSize = 5;//11;
+int kernelLength = 25;//121;
+float uv_offset[50];//uv_offset[242];
 
 #define EPRINTF(...)  __android_log_print(ANDROID_LOG_ERROR,"logic",__VA_ARGS__)
 #define DPRINTF(...)  __android_log_print(ANDROID_LOG_DEBUG,"logic",__VA_ARGS__)
@@ -60,7 +63,6 @@ void initQuad() {
 }
 
 void drawQuad() {
-	//int actualProgram = 0;
 	glUseProgram(shaderParams[actualProgram].prog);
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -72,6 +74,8 @@ void drawQuad() {
 
 	glUniform1i(shaderParams[actualProgram].tex1_loc, 0);
 	glUniform1i(shaderParams[actualProgram].tex2_loc, 1);
+
+	glUniform2fv(shaderParams[actualProgram].offset_loc, kernelLength, uv_offset);
 
 	/*glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texID1);
@@ -100,20 +104,14 @@ void on_draw_frame() {
 	//Disable depth test
 	glDisable(GL_DEPTH_TEST);
 
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texID1);
-
 	//computeHistogram();
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texID1);
 
-	//TEMP CHANGE
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, texID2);
-
 	drawQuad();
-
 	glFinish();
 }
 
@@ -164,6 +162,24 @@ void compileAllShaders() {
 	if(areShadersLoaded == 0) {
 		initQuad();
 		DPRINTF("About to compile all shaders");
+
+		float xInc = 1.0 / 1080.0/*(float) textureWidth*/;
+		float yInc = 1.0 / 1920.0/*(float) textureHeight*/;
+
+		//plnime offset
+		for (int i = 0; i < kernelSize; i++)
+		{
+			for (int j = 0; j < kernelSize; j++)
+			{
+				uv_offset[(((i*kernelSize)+j)*2)+0] = (-1.0 * xInc) + ((float)i * xInc);
+				uv_offset[(((i*kernelSize)+j)*2)+1] = (-1.0 * yInc) + ((float)j * yInc);
+
+				//DPRINTF("x: %f",uv_offset[(((i*kernelSize)+j)*2)+0]);
+				//DPRINTF("y: %f",uv_offset[(((i*kernelSize)+j)*2)+1]);
+			}
+
+		}
+
 		for(int i=0; i < NUM_OF_SHADERS; i++) {
 			DPRINTF("%s %s [%d]", effectsShaders[i][0],effectsShaders[i][1],i);
 			compileAndSetTargetedShader(i);
@@ -178,6 +194,7 @@ void compileAndSetTargetedShader(int i) {
 	shaderParams[i].uv_loc = glGetAttribLocation(shaderParams[i].prog, "vUV");
 	shaderParams[i].tex1_loc = glGetUniformLocation(shaderParams[i].prog, "tex");
 	shaderParams[i].tex2_loc = glGetUniformLocation(shaderParams[i].prog, "tex2");
+    shaderParams[i].offset_loc = glGetUniformLocation(shaderParams[i].prog, "uv_offset");
 	//DPRINTF("%s %s", effectsShaders[i][0], effectsShaders[i][1]);
 }
 
@@ -190,7 +207,6 @@ void initFBO() {
 
 
 	DPRINTF("Checking framebuffer status...");
-	bool ok = true;
 	// check FBO status
 	GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
 	switch(status)
@@ -201,42 +217,34 @@ void initFBO() {
 
 	case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
 		EPRINTF("Framebuffer incomplete: Attachment is NOT complete.");
-		ok = false;
 		break ;
 
 	case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
 		EPRINTF("Framebuffer incomplete: No image is attached to FBO.");
-		ok = false;
 		break ;
 
 	case GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS:
 		EPRINTF("Framebuffer incomplete: Attached images have different dimensions.");
-		ok = false;
 		break ;
 
 	case GL_FRAMEBUFFER_UNSUPPORTED:
 		EPRINTF("Unsupported by FBO implementation.");
-		ok = false;
 		break ;
 
 	default:
 		EPRINTF("Unknown error.");
-		ok = false;
 		break ;
 	}
 
 	glBindFramebuffer (GL_FRAMEBUFFER, 0);
 
-	if(!ok) {
-		return;
-	}
-
 }
-//GL_HALF_FLOAT_OES
+
 void initRenderTex() {
 	glGenTextures (1, &histogramTex);
 	glBindTexture (GL_TEXTURE_2D, histogramTex);
-	glTexImage2D (GL_TEXTURE_2D, 0, GL_RGBA , 256, 1, 0, GL_RGBA, GL_HALF_FLOAT_OES, 0);
+	glTexImage2D (GL_TEXTURE_2D, 0, GL_RGBA , 256, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+	//glTexImage2D (GL_TEXTURE_2D, 0, GL_RGB16F_EXT , 256, 1, 0, GL_RGB, GL_FLOAT, 0); //needs GL_EXT_color_buffer_half_float extension
 	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 }
 
@@ -269,5 +277,3 @@ void initPointVBO(int w, int h) {
 		DPRINTF("k:%d - %f %f",k,arr[2*k],arr[2*k + 1]);
 	}*/
 }
-
-

@@ -9,7 +9,6 @@
 #include "logic.h"
 
 //extern GLuint texID1,texID2;
-
 #define DPRINTF(...)  __android_log_print(ANDROID_LOG_DEBUG,"Renderer",__VA_ARGS__)
 
 JNIEXPORT void JNICALL Java_com_example_openglestest_rendererNativeWrapper_on_1surface_1created(
@@ -17,6 +16,7 @@ JNIEXPORT void JNICALL Java_com_example_openglestest_rendererNativeWrapper_on_1s
 	initPointVBO(textureWidth,textureHeight);
 	initFBO();
 	compileAllShaders();
+	DPRINTF("compileAllShaders() done");
 	on_surface_created();
 }
 
@@ -37,7 +37,6 @@ JNIEXPORT void JNICALL Java_com_example_openglestest_rendererNativeWrapper_injec
 	DPRINTF("width: %d and height: %d",w1,h1);
 	textureWidth = w1;
 	textureHeight = h1;
-
 	jbyte* jimgData = 0;
 	jboolean isCopy = 0;
 	jimgData = (*env)->GetByteArrayElements(env, tex1, &isCopy);
@@ -68,10 +67,14 @@ void generateTexture(GLuint *id, jbyte * data, int w, int h) {
 	glBindTexture(GL_TEXTURE_2D, *id);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA,
 			GL_UNSIGNED_BYTE, data);
 	glGenerateMipmap(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, 0);
+
+
 }

@@ -9,6 +9,5 @@ uniform vec2 uv_offset[kernelSize * kernelSize];
 
 void main()
 {
-	gl_FragColor = texture2D(tex, uv);
-	//gl_FragColor = texture2D(tex2, uv);
+	gl_FragColor = texture2D(tex2, uv);
 }

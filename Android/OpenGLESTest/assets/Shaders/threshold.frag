@@ -15,6 +15,9 @@ const float maxValue = 1.0;
 
 const bool inverseTresh = true;
 
+const int kernelSize = 5;
+
+uniform vec2 uv_offset[kernelSize * kernelSize];
 
 //threshold
 void main(void)

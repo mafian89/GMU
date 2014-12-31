@@ -93,44 +93,65 @@ public class GLActivity extends Activity {
 		if (id == R.id.basic) {
 			rendererNativeWrapper.switchEffect(0);
 			return true;
+		} else if (id == R.id.basic_mask) {
+				rendererNativeWrapper.switchEffect(1);
+				return true;
 		} else if (id == R.id.threshold) {
 			rendererNativeWrapper.switchEffect(2);
 			return true;
-		} else if (id == R.id.adaptive_threshold) {
-			rendererNativeWrapper.switchEffect(1);
-			return true;
-		} else if (id == R.id.bitwise_and) {
+		} else if (id == R.id.adaptive_threshold_mean) {
 			rendererNativeWrapper.switchEffect(3);
 			return true;
-		} else if (id == R.id.bitwise_not_and) {
+		} else if (id == R.id.adaptive_threshold_meanC) {
 			rendererNativeWrapper.switchEffect(4);
 			return true;
-		} else if (id == R.id.bitwise_not) {
+		} else if (id == R.id.adaptive_threshold_median) {
 			rendererNativeWrapper.switchEffect(5);
 			return true;
-		} else if (id == R.id.bitwise_or) {
+		} else if (id == R.id.adaptive_threshold_minMax) {
 			rendererNativeWrapper.switchEffect(6);
 			return true;
-		} else if (id == R.id.bitwise_xor) {
+		} else if (id == R.id.bitwise_and) {
 			rendererNativeWrapper.switchEffect(7);
 			return true;
-		} else if (id == R.id.dilation) {
+		} else if (id == R.id.bitwise_or) {
 			rendererNativeWrapper.switchEffect(8);
 			return true;
-		} else if (id == R.id.erosion) {
+		} else if (id == R.id.bitwise_xor) {
 			rendererNativeWrapper.switchEffect(9);
 			return true;
-		} else if (id == R.id.gaussian_filter) {
+		} else if (id == R.id.bitwise_not) {
 			rendererNativeWrapper.switchEffect(10);
 			return true;
-		} else if (id == R.id.mean_filter) {
+		} else if (id == R.id.bitwise_nand) {
 			rendererNativeWrapper.switchEffect(11);
 			return true;
-		} else if (id == R.id.median_filter) {
+		} else if (id == R.id.bitwise_nor) {
 			rendererNativeWrapper.switchEffect(12);
+			return true;
+		} else if (id == R.id.dilation) {
+			rendererNativeWrapper.switchEffect(13);
+			return true;
+		} else if (id == R.id.erosion) {
+			rendererNativeWrapper.switchEffect(14);
+			return true;
+		} else if (id == R.id.opening) {
+			rendererNativeWrapper.switchEffect(15);
+			return true;
+		} else if (id == R.id.closing) {
+			rendererNativeWrapper.switchEffect(16);
+			return true;
+		} else if (id == R.id.mean_filter) {
+			rendererNativeWrapper.switchEffect(17);
+			return true;
+		} else if (id == R.id.median_filter) {
+			rendererNativeWrapper.switchEffect(18);
+			return true;
+		} else if (id == R.id.gaussian_filter) {
+			rendererNativeWrapper.switchEffect(19);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
+
 }

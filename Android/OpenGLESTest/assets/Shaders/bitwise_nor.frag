@@ -8,9 +8,8 @@ const int kernelSize = 3;
 
 uniform vec2 uv_offset[kernelSize * kernelSize];
 
-//bitwise_or
+//bitwise_nor
 void main()
 {
-	gl_FragColor = texture2D(tex2, uv) + texture2D(tex,uv);
+	gl_FragColor = texture2D(tex,uv) + (vec4(1.0) - texture2D(tex2, uv));
 }
-

@@ -8,30 +8,64 @@
         android:showAsAction="never"
         android:title="@string/basic"/>
     
-    <item
-        android:id="@+id/adaptive_threshold"
+    <item 
+        android:id="@+id/basic_mask" 
         android:orderInCategory="100"
         android:showAsAction="never"
-        android:title="@string/adaptive_threshold"/>  
+        android:title="@string/basic_mask"/>
     
     <item
         android:id="@+id/threshold"
         android:orderInCategory="100"
         android:showAsAction="never"
-        android:title="@string/threshold"/>   
+        android:title="@string/threshold"/>
+    
+    <item
+        android:id="@+id/adaptive_threshold_mean"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/adaptive_threshold_mean"/>  
+    
+    <item 
+        android:id="@+id/adaptive_threshold_meanC"
+        android:orderInCategory="100"
+        android:showAsAction="never" 
+        android:title="@string/adaptive_threshold_meanC"/>
+    
+    <item 
+        android:id="@+id/adaptive_threshold_median" 
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/adaptive_threshold_median"/>
+    
+    <item 
+        android:id="@+id/adaptive_threshold_minMax" 
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/adaptive_threshold_minMax"/>
+    
+    
+    
+    
         
     <item
         android:id="@+id/bitwise_and"
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="@string/bitwise_and"/>  
-        
+    
     <item
-        android:id="@+id/bitwise_not_and"
+        android:id="@+id/bitwise_or"
         android:orderInCategory="100"
         android:showAsAction="never"
-        android:title="@string/bitwise_not_and"/>  
-        
+        android:title="@string/bitwise_or"/> 
+            
+    <item
+        android:id="@+id/bitwise_xor"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/bitwise_xor"/>      
+    
     <item
         android:id="@+id/bitwise_not"
         android:orderInCategory="100"
@@ -39,17 +73,17 @@
         android:title="@string/bitwise_not"/>  
         
     <item
-        android:id="@+id/bitwise_or"
+        android:id="@+id/bitwise_nand"
         android:orderInCategory="100"
         android:showAsAction="never"
-        android:title="@string/bitwise_or"/>  
+        android:title="@string/bitwise_nand"/>  
         
-    <item
-        android:id="@+id/bitwise_xor"
+    <item 
+        android:id="@+id/bitwise_nor" 
         android:orderInCategory="100"
         android:showAsAction="never"
-        android:title="@string/bitwise_xor"/>  
-        
+        android:title="@string/bitwise_nor"/>
+         
     <item
         android:id="@+id/dilation"
         android:orderInCategory="100"
@@ -60,14 +94,20 @@
         android:id="@+id/erosion"
         android:orderInCategory="100"
         android:showAsAction="never"
-        android:title="@string/erosion"/>  
-        
-    <item
-        android:id="@+id/gaussian_filter"
+        android:title="@string/erosion"/>
+    
+    <item 
+        android:id="@+id/opening" 
         android:orderInCategory="100"
         android:showAsAction="never"
-        android:title="@string/gaussian_filter"/>  
-        
+        android:title="@string/opening"/>
+    
+    <item 
+        android:id="@+id/closing" 
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/closing"/>  
+    
     <item
         android:id="@+id/mean_filter"
         android:orderInCategory="100"
@@ -78,6 +118,12 @@
         android:id="@+id/median_filter"
         android:orderInCategory="100"
         android:showAsAction="never"
-        android:title="@string/median_filter"/>  
+        android:title="@string/median_filter"/>
+    
+    <item
+        android:id="@+id/gaussian_filter"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/gaussian_filter"/> 
 
 </menu>
