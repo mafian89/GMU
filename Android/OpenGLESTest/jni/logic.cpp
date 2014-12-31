@@ -62,20 +62,20 @@ void initQuad() {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void drawQuad() {
-	glUseProgram(shaderParams[actualProgram].prog);
+void drawQuad(GLuint prog) {
+	glUseProgram(shaderParams[prog].prog);
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 
-	glVertexAttribPointer(shaderParams[actualProgram].pos_loc, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GL_FLOAT), (void*)0);
-	glVertexAttribPointer(shaderParams[actualProgram].uv_loc, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GL_FLOAT), (GLvoid*)(sizeof(float)* 8));
-	glEnableVertexAttribArray(shaderParams[actualProgram].pos_loc);
-	glEnableVertexAttribArray(shaderParams[actualProgram].uv_loc);
+	glVertexAttribPointer(shaderParams[prog].pos_loc, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GL_FLOAT), (void*)0);
+	glVertexAttribPointer(shaderParams[prog].uv_loc, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GL_FLOAT), (GLvoid*)(sizeof(float)* 8));
+	glEnableVertexAttribArray(shaderParams[prog].pos_loc);
+	glEnableVertexAttribArray(shaderParams[prog].uv_loc);
 
-	glUniform1i(shaderParams[actualProgram].tex1_loc, 0);
-	glUniform1i(shaderParams[actualProgram].tex2_loc, 1);
+	glUniform1i(shaderParams[prog].tex1_loc, 0);
+	glUniform1i(shaderParams[prog].tex2_loc, 1);
 
-	glUniform2fv(shaderParams[actualProgram].offset_loc, kernelLength, uv_offset);
+	glUniform2fv(shaderParams[prog].offset_loc, kernelLength, uv_offset);
 
 	/*glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texID1);
@@ -105,13 +105,20 @@ void on_draw_frame() {
 	glDisable(GL_DEPTH_TEST);
 
 	//computeHistogram();
-
+	glBindFramebuffer(GL_FRAMEBUFFER, FBO);
+	glViewport(0,0, textureWidth, textureHeight);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texID1);
+	drawQuad(actualProgram);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	//glClear ( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, renderTex);
 
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, texID2);
-	drawQuad();
+	drawQuad(8);
 	glFinish();
 }
 
@@ -203,8 +210,9 @@ void initFBO() {
 
 	glGenFramebuffers (1, &FBO);
 	glBindFramebuffer (GL_FRAMEBUFFER, FBO);
-	glFramebufferTexture2D (GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, histogramTex, 0);
-
+	//Histogram - figure out how to switch between renderTex and histogramTex
+	//glFramebufferTexture2D (GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, histogramTex, 0);
+	glFramebufferTexture2D (GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, renderTex, 0);
 
 	DPRINTF("Checking framebuffer status...");
 	// check FBO status
@@ -246,6 +254,16 @@ void initRenderTex() {
 	glTexImage2D (GL_TEXTURE_2D, 0, GL_RGBA , 256, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
 	//glTexImage2D (GL_TEXTURE_2D, 0, GL_RGB16F_EXT , 256, 1, 0, GL_RGB, GL_FLOAT, 0); //needs GL_EXT_color_buffer_half_float extension
 	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+	glGenTextures (1, &renderTex);
+	glBindTexture (GL_TEXTURE_2D, renderTex);
+	glTexImage2D (GL_TEXTURE_2D, 0, GL_RGBA , textureWidth, textureHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
 }
 
 void initPointVBO(int w, int h) {

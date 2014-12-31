@@ -27,7 +27,7 @@ void initRenderTex();
 void initPointVBO(int w, int h);
 void computeHistogram();
 
-GLuint texID1,texID2,histogramTex;
+GLuint texID1,texID2,histogramTex,renderTex;
 int textureWidth,textureHeight;
 extern int actualProgram;
 extern int areShadersLoaded;
