@@ -72,7 +72,7 @@ void initQuad() {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void drawQuad(GLuint prog) {
+void drawQuad(GLuint prog, int v_coord_flipped) {
 	glUseProgram(shaderParams[prog].prog);
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -84,6 +84,7 @@ void drawQuad(GLuint prog) {
 
 	glUniform1i(shaderParams[prog].tex1_loc, 0);
 	glUniform1i(shaderParams[prog].tex2_loc, 1);
+	glUniform1i(shaderParams[prog].v_coord_flipped_loc, v_coord_flipped);
 
 	glUniform2fv(shaderParams[prog].offset3_loc, kernelLength3, uv_offset3);
 	glUniform2fv(shaderParams[prog].offset5_loc, kernelLength5, uv_offset5);
@@ -118,22 +119,21 @@ void on_draw_frame() {
 	glViewport(0,0, displayWidth, displayHeight);
 	//computeHistogram();
 	//Comment from here
-	/*glBindFramebuffer(GL_FRAMEBUFFER, FBO);
-	//glViewport(0,0, displayWidth, displayHeight);
+	glBindFramebuffer(GL_FRAMEBUFFER, FBO);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texID1);
-	drawQuad(actualProgram);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);*/
+	drawQuad(actualProgram,0);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	//To here
 
 	//glClear ( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texID1); //Uncoment this in case of problems
-	//glBindTexture(GL_TEXTURE_2D, renderTex); //Comment this in case of problems
+	//glBindTexture(GL_TEXTURE_2D, texID1); //Uncoment this in case of problems
+	glBindTexture(GL_TEXTURE_2D, renderTex); //Comment this in case of problems
 
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, texID2);
-	drawQuad(actualProgram);
+	drawQuad(actualProgram,1);
 	glFinish();
 }
 
@@ -185,12 +185,14 @@ void compileAllShaders() {
 		initQuad();
 		DPRINTF("About to compile all shaders");
 		/*
-		 * May we should change this to display width & height
+		 * Maybe we should change this to display width & height
 		 * 2014-12-31: 	Changed 1080 -> displayWidth
 		 * 				Changed 1920 -> displayHeight
+		 * 2014-12-31:	Changed displayWidth -> textureWidth
+		 * 				Changed displayHeight -> textureHeight
 		 */
-		float xInc = 1.0 / displayWidth/*(float) textureWidth*/;
-		float yInc = 1.0 / displayHeight/*(float) textureHeight*/;
+		float xInc = 1.0 / textureWidth/*(float) textureWidth*/;
+		float yInc = 1.0 / textureHeight/*(float) textureHeight*/;
 
 		//plnime offset
 		for (int i = 0; i < kernelSize3; i++)
@@ -244,6 +246,7 @@ void compileAndSetTargetedShader(int i) {
 	shaderParams[i].prog = build_program_from_assets(effectsShaders[i][0], effectsShaders[i][1]);
 	shaderParams[i].pos_loc = glGetAttribLocation(shaderParams[i].prog, "vPosition");
 	shaderParams[i].uv_loc = glGetAttribLocation(shaderParams[i].prog, "vUV");
+	shaderParams[i].v_coord_flipped_loc = glGetUniformLocation(shaderParams[i].prog, "v_coord_flipped");
 	shaderParams[i].tex1_loc = glGetUniformLocation(shaderParams[i].prog, "tex");
 	shaderParams[i].tex2_loc = glGetUniformLocation(shaderParams[i].prog, "tex2");
     shaderParams[i].offset3_loc = glGetUniformLocation(shaderParams[i].prog, "uv_offset3");

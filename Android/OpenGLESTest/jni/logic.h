@@ -14,7 +14,7 @@ extern "C" {
 #include "Common.h"
 
 void initQuad();
-void drawQuad();
+void drawQuad(GLuint prog, int v_coord_flipped);
 void on_surface_created();
 void on_surface_changed();
 void on_draw_frame();
@@ -65,7 +65,7 @@ static const char* effectsShaders[][NUM_OF_SHADERS] = {
 
 typedef struct shaderParams {
 	GLuint prog;
-	GLuint pos_loc, uv_loc, tex1_loc, tex2_loc;
+	GLuint pos_loc, uv_loc, tex1_loc, tex2_loc, v_coord_flipped_loc;
 	GLuint offset3_loc, offset5_loc, offset11_loc;
 }SHADER_PARAMS;
 #endif /* LOGIC_H_ */
