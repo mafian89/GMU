@@ -21,7 +21,7 @@ const int valueC = 10;
 //  3 - median 			   //
 //  4 - (min + max) / 2    //	
 /////////////////////////////
-const int thresholdType = 3; 
+const int thresholdType = 1; 
 const bool inverseThreshold = false;
 
 
