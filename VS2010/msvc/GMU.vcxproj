@@ -82,6 +82,12 @@
     <ClCompile Include="..\src\GLSLShader\GLSLShader.cpp" />
     <ClCompile Include="..\src\GMU.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\shaders\histogram.frag" />
+    <None Include="..\shaders\histogram.vs" />
+    <None Include="..\shaders\textureViewer.frag" />
+    <None Include="..\shaders\textureViewer.vs" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
