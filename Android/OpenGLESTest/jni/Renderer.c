@@ -7,9 +7,19 @@
 
 #include "Renderer.h"
 #include "logic.h"
+#include <time.h>
 
 //extern GLuint texID1,texID2;
 #define DPRINTF(...)  __android_log_print(ANDROID_LOG_DEBUG,"Renderer",__VA_ARGS__)
+
+/* return current time in milliseconds */
+static double now_ms(void) {
+
+    struct timespec res;
+    clock_gettime(CLOCK_REALTIME, &res);
+    return 1000.0 * res.tv_sec + (double) res.tv_nsec / 1e6;
+
+}
 
 JNIEXPORT void JNICALL Java_com_example_openglestest_rendererNativeWrapper_on_1surface_1created(
 		JNIEnv * env, jclass cls, jint resx, jint resy) {
@@ -31,7 +41,12 @@ JNIEXPORT void JNICALL Java_com_example_openglestest_rendererNativeWrapper_on_1s
 
 JNIEXPORT int JNICALL Java_com_example_openglestest_rendererNativeWrapper_on_1draw_1frame(
 		JNIEnv * env, jclass cls) {
+	double start = now_ms(); // start time
 	on_draw_frame();
+	double end = now_ms(); // finish time
+
+	double delta = end - start; // time your code took to exec in ms
+	DPRINTF("DRAW TIME: %f",delta);
 	return 50;
 }
 
