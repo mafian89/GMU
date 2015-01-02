@@ -37,23 +37,23 @@ void main(void)
     				(0.36 * sample[4]));*/
     
     //Gaussian 5x5			
-	/*gl_FragColor = (
+	gl_FragColor = (
                    (0.00366  * (sample[0] + sample[4]  + sample[20] + sample[24])) +
                    (0.01465  * (sample[1] + sample[3]  + sample[5]  + sample[9] + sample[15] + sample[19] + sample[21] + sample[23])) +
                    (0.02564  * (sample[2] + sample[10] + sample[14] + sample[22])) +
                    (0.05861 * (sample[6] + sample[8]  + sample[16] + sample[18])) +
                    (0.09524 * (sample[7] + sample[11] + sample[13] + sample[17])) +
                    (0.15018 * sample[12])
-                   ) ; */
+                   ) ; 
                    
-    result = (
+    /*result = (
                    (0.00366  * (sample[0] + sample[4]  + sample[20] + sample[24])) +
                    (0.01465  * (sample[1] + sample[3]  + sample[5]  + sample[9] + sample[15] + sample[19] + sample[21] + sample[23])) +
                    (0.02564  * (sample[2] + sample[10] + sample[14] + sample[22])) +
                    (0.05861 * (sample[6] + sample[8]  + sample[16] + sample[18])) +
                    (0.09524 * (sample[7] + sample[11] + sample[13] + sample[17])) +
                    (0.15018 * sample[12])
-                   ) ;
+                   ) ;*/
                    
     //Gaussian 7x7
 	/*gl_FragColor = (								 

@@ -80,7 +80,7 @@ void main(void)
 		int n, i;
 	
 		//sort array
-		for (n = ((kernelSize * kernelSize) - 1); n > 0; --n) 
+	/*	for (n = ((kernelSize * kernelSize) - 1); n > 0; --n) 
 		{
 	  		for (i = 0; i < n; ++i) 
 	  		{ 
@@ -89,6 +89,23 @@ void main(void)
 				sample[i] = tmp; 
 			}
 		}
+	*/
+	
+		n = 8;
+		i = 0;
+		while (n != 0)
+		{
+			tmp = min(sample[i], sample[i+1]); 
+			sample[i+1] = sample[i] + sample[i+1] - tmp; 
+			sample[i] = tmp;
+			i++;
+			
+			if (i == n)
+			{
+				i = 0;
+				n = n - 1;
+			}
+		}	
     
     	threshold = int( sample[midIndex] * 255.0); 
     }
@@ -119,7 +136,7 @@ void main(void)
     	
     }
     
-    //gl_FragColor = vec4(vec3(grey),1.0);
+    gl_FragColor = vec4(vec3(grey),1.0);
     
-    result = vec4(vec3(grey),1.0);
+    //result = vec4(vec3(grey),1.0);
 }

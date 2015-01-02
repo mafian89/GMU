@@ -48,8 +48,8 @@ void main(void)
     }
     
 
-    //gl_FragColor = vec4(grey);
+    gl_FragColor = vec4(grey);
     
-    result = vec4(grey);
+    //result = vec4(grey);
    
 }

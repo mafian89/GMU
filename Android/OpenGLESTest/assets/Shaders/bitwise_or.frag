@@ -14,8 +14,8 @@ vec4 result;
 //bitwise_or
 void main()
 {
-	//gl_FragColor = texture2D(tex2, uv) + texture2D(tex,uv);
+	gl_FragColor = texture2D(tex2, uv) + texture2D(tex,uv);
 	
-	result = texture2D(tex2, uv) + texture2D(tex,uv);
+	//result = texture2D(tex2, uv) + texture2D(tex,uv);
 }
 

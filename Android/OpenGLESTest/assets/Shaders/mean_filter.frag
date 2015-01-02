@@ -21,8 +21,8 @@ void main(void)
 		colorSum += texture2D(tex, uv + uv_offset11[i]);
 	}
 
-    //gl_FragColor = vec4(colorSum / float(kernelSize * kernelSize));
+    gl_FragColor = vec4(colorSum / float(kernelSize * kernelSize));
     
-    result = vec4(colorSum / float(kernelSize * kernelSize));
+    //result = vec4(colorSum / float(kernelSize * kernelSize));
     
 }

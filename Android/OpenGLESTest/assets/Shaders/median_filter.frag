@@ -63,9 +63,9 @@ void main(void)
         }
     }
     
-    //gl_FragColor = vec4( sample[midIndex] );
+    gl_FragColor = vec4( sample[midIndex] );
     
-    result = vec4( sample[midIndex] );
+    //result = vec4( sample[midIndex] );
     
     
 }

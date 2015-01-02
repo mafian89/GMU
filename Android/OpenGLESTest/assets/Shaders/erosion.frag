@@ -26,8 +26,8 @@ void main(void)
 
     }
 
-    //gl_FragColor = minValue;
+    gl_FragColor = minValue;
     
-    result = minValue;
+    //result = minValue;
     
 }

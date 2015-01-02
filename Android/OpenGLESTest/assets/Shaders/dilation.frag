@@ -26,8 +26,8 @@ void main(void)
 
     }
 
-    //gl_FragColor = maxValue;
+    gl_FragColor = maxValue;
     
-    result = maxValue;
+    //result = maxValue;
     
 }

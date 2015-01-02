@@ -103,7 +103,7 @@ void main(void)
     	
     }
     
-    //gl_FragColor = vec4(vec3(grey),1.0);
+    gl_FragColor = vec4(vec3(grey),1.0);
     
-    result = vec4(vec3(grey),1.0);
+    //result = vec4(vec3(grey),1.0);
 }
