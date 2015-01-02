@@ -178,14 +178,14 @@ void on_draw_frame() {
 		//glBindFramebuffer(GL_FRAMEBUFFER, FBO);
 
 		//texture1 - image
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, texID1);
+		//glActiveTexture(GL_TEXTURE0);
+		//glBindTexture(GL_TEXTURE_2D, texID1);
 
 		//texture2 - mask
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, texID2);
-		drawQuad(0,0);
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		//glActiveTexture(GL_TEXTURE1);
+		//glBindTexture(GL_TEXTURE_2D, texID2);
+		//drawQuad(0,0);
+		//glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		//To here
 
 		//glClear ( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );

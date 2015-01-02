@@ -14,6 +14,8 @@ uniform vec2 uv_offset11[121];
 
 const int valueC = 10;
 
+vec4 result;
+
 /////////////////////////////
 // Adaptive threshold type //
 //  1 - mean 			   //
@@ -102,4 +104,6 @@ void main(void)
     }
     
     gl_FragColor = vec4(vec3(grey),1.0);
+    
+    result = vec4(vec3(grey),1.0);
 }

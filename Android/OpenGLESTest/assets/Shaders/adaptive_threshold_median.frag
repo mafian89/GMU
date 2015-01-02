@@ -14,6 +14,8 @@ uniform vec2 uv_offset11[121];
 
 const int valueC = 10;
 
+vec4 result;
+
 /////////////////////////////
 // Adaptive threshold type //
 //  1 - mean 			   //
@@ -21,11 +23,11 @@ const int valueC = 10;
 //  3 - median 			   //
 //  4 - (min + max) / 2    //	
 /////////////////////////////
-const int thresholdType = 1; 
+const int thresholdType = 3; 
 const bool inverseThreshold = false;
 
 
-float median(float sample[kernelSize * kernelSize])
+/*float median(float sample[kernelSize * kernelSize])
 {
 	float tmp;
 	int midIndex = int(((kernelSize * kernelSize)-1)/2);
@@ -42,7 +44,7 @@ float median(float sample[kernelSize * kernelSize])
 	}
 
 	return sample[midIndex];
-}
+}*/
 
 //adaptive threshold
 void main(void)
@@ -72,7 +74,23 @@ void main(void)
     	threshold = int((sampleSum / float(kernelSize * kernelSize))*255.0) - valueC;
     }
     else if (thresholdType == 3) {  //median
-    	threshold = int( median(sample) * 255.0); 
+    
+		float tmp;
+		int midIndex = int(((kernelSize * kernelSize)-1)/2);
+		int n, i;
+	
+		//sort array
+		for (n = ((kernelSize * kernelSize) - 1); n > 0; --n) 
+		{
+	  		for (i = 0; i < n; ++i) 
+	  		{ 
+				tmp = min(sample[i], sample[i+1]); 
+				sample[i+1] = sample[i] + sample[i+1] - tmp; 
+				sample[i] = tmp; 
+			}
+		}
+    
+    	threshold = int( sample[midIndex] * 255.0); 
     }
     else if (thresholdType == 4) {  //(min+max)/2
     	threshold = int(((minValueSample + maxValueSample)/2.0) * 255.0);
@@ -101,5 +119,7 @@ void main(void)
     	
     }
     
-    gl_FragColor = vec4(vec3(grey),1.0);
+    //gl_FragColor = vec4(vec3(grey),1.0);
+    
+    result = vec4(vec3(grey),1.0);
 }

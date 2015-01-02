@@ -9,7 +9,10 @@ uniform vec2 uv_offset3[9];
 uniform vec2 uv_offset5[25];
 uniform vec2 uv_offset11[121];
 
-/*vec4 median(vec4 sample[kernelSize * kernelSize])
+vec4 result;
+
+/*
+vec4 median(vec4 sample[kernelSize * kernelSize])
 {
     vec4 tmp;
     int midIndex = int(((kernelSize * kernelSize)-1)/2);
@@ -39,10 +42,30 @@ void main(void)
 		sample[i] = texture2D(tex, uv + uv_offset3[i]);
 	}
 	
-	int midIndex = int(((kernelSize * kernelSize)-1)/2);
 
     //gl_FragColor = vec4( median(sample) );
     //gl_FragColor = vec4( median(sample).rgb, 1.0 );
-    gl_FragColor = vec4( sample[midIndex] );
+    
+    //sorting array
+    vec4 tmp;
+    int midIndex = int(((kernelSize * kernelSize)-1)/2);
+    
+    int n, i; //indexes
+
+    //sort array
+    for (n = ((kernelSize * kernelSize) - 1) ; n > 0 ; --n) 
+    {
+        for (i = 0; i < n; ++i) 
+        { 
+            tmp = min(sample[i], sample[i+1]); 
+            sample[i+1] = sample[i] + sample[i+1] - tmp; 
+            sample[i] = tmp; 
+        }
+    }
+    
+    //gl_FragColor = vec4( sample[midIndex] );
+    
+    result = vec4( sample[midIndex] );
+    
     
 }

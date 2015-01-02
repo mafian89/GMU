@@ -30,6 +30,9 @@ import android.widget.TextView;
 
 public class TestGLRenderer implements GLSurfaceView.Renderer {
 
+	private Double sum = 0.0;
+	private long count = 0;
+	
 	private final Context mActivityContext;
 	//Context will be probably used for loading resources
 	public TestGLRenderer(final Context activityContext) {
@@ -42,6 +45,14 @@ public class TestGLRenderer implements GLSurfaceView.Renderer {
 		Integer i = rendererNativeWrapper.on_draw_frame();
 		Long estimatedTime = System.currentTimeMillis() - startTime;
 		//Log.d("Draw", estimatedTime.toString());
+		count++;
+		sum += estimatedTime;
+		if (count == 100) {
+			count = 0;
+			sum /= 100.0;
+			Log.d("Draw", sum.toString());
+			sum = 0.0;
+		}
 	}
 
 	@Override

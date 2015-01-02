@@ -17,6 +17,8 @@ uniform vec2 uv_offset3[9];
 uniform vec2 uv_offset5[25];
 uniform vec2 uv_offset11[121];
 
+vec4 result;
+
 //threshold
 void main(void)
 {
@@ -46,6 +48,8 @@ void main(void)
     }
     
 
-    gl_FragColor = vec4(grey);
+    //gl_FragColor = vec4(grey);
+    
+    result = vec4(grey);
     
 }

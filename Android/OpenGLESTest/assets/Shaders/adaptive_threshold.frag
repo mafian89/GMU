@@ -24,6 +24,7 @@ const int valueC = 10;
 const int thresholdType = 3; 
 const bool inverseThreshold = false;
 
+vec4 result;
 
 float median(float sample[kernelSize * kernelSize])
 {
@@ -116,5 +117,7 @@ void main(void)
     	
     }
     
-    gl_FragColor = vec4(vec3(grey),1.0);
+    //gl_FragColor = vec4(vec3(grey),1.0);
+    
+    result = vec4(vec3(grey),1.0);
 }
