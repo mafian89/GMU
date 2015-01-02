@@ -39,15 +39,14 @@ JNIEXPORT void JNICALL Java_com_example_openglestest_rendererNativeWrapper_on_1s
 	on_surface_changed();
 }
 
-JNIEXPORT int JNICALL Java_com_example_openglestest_rendererNativeWrapper_on_1draw_1frame(
+JNIEXPORT void JNICALL Java_com_example_openglestest_rendererNativeWrapper_on_1draw_1frame(
 		JNIEnv * env, jclass cls) {
 	double start = now_ms(); // start time
 	on_draw_frame();
 	double end = now_ms(); // finish time
 
 	double delta = end - start; // time your code took to exec in ms
-	DPRINTF("DRAW TIME: %f",delta);
-	return 50;
+	//DPRINTF("DRAW TIME: %f",delta);
 }
 
 JNIEXPORT void JNICALL Java_com_example_openglestest_rendererNativeWrapper_injectTextures(
@@ -84,6 +83,7 @@ JNIEXPORT void JNICALL Java_com_example_openglestest_rendererNativeWrapper_compi
 void generateTexture(GLuint *id, jbyte * data, int w, int h) {
 	glGenTextures(1, id);
 	glBindTexture(GL_TEXTURE_2D, *id);
+	//Texture filtering should be set to GL_NEAREST in case if we want to compute histogram
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 

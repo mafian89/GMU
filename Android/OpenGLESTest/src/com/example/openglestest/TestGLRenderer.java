@@ -42,7 +42,7 @@ public class TestGLRenderer implements GLSurfaceView.Renderer {
 	@Override
 	public void onDrawFrame(GL10 arg0) {
 		Long startTime = System.currentTimeMillis();
-		Integer i = rendererNativeWrapper.on_draw_frame();
+		rendererNativeWrapper.on_draw_frame();
 		Long estimatedTime = System.currentTimeMillis() - startTime;
 		//Log.d("Draw", estimatedTime.toString());
 		count++;

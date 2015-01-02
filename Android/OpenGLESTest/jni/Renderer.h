@@ -27,7 +27,7 @@ JNIEXPORT void JNICALL Java_com_example_openglestest_rendererNativeWrapper_on_1s
  * Method:    on_draw_frame
  * Signature: ()V
  */
-JNIEXPORT int JNICALL Java_com_example_openglestest_rendererNativeWrapper_on_1draw_1frame
+JNIEXPORT void JNICALL Java_com_example_openglestest_rendererNativeWrapper_on_1draw_1frame
   (JNIEnv *, jclass);
 
 JNIEXPORT void JNICALL Java_com_example_openglestest_rendererNativeWrapper_injectTextures
