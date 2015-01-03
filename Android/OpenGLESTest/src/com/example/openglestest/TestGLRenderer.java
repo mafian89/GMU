@@ -9,9 +9,6 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 import com.example.utils.FileUtils;
-import com.example.utils.RawResourceReader;
-import com.example.utils.ShaderHelper;
-import com.example.utils.TextureHelper;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -27,8 +24,6 @@ import android.view.Display;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.TextView;
-
-//import com.example.openglestest.FPSCounter;
 
 public class TestGLRenderer implements GLSurfaceView.Renderer {
 
