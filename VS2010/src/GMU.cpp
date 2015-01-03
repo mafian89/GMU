@@ -7,12 +7,17 @@
 
 using namespace std;
 
-#define WIDTH 800
-#define HEIGHT 600
+#define WIDTH 256
+#define HEIGHT 256
 
 float aspect;
 CTextureViewer * ctv;
-GLuint tex, tex2;
+GLuint tex, tex2,renderTex;
+float arr[WIDTH*HEIGHT*2];
+GLuint HistogramVBO, FBO;
+GLSLShader hist;
+
+int printed = 1;
 
 void onInit();
 
@@ -51,6 +56,36 @@ SDL_Surface * init(unsigned width, unsigned height, unsigned color, unsigned dep
     //onWindowResized(width, height);
 
     return screen;
+}
+
+
+void initPointVBO() {
+
+	for(int i=0;i<WIDTH*HEIGHT;i++) {
+		arr[2*i] = (float)(i % WIDTH);
+		arr[2*i+1] = (float)((int)(i / WIDTH));
+	}
+
+
+	//Generate VBO
+	glGenBuffers(1, &HistogramVBO);
+
+	//Bind VBO
+	glBindBuffer(GL_ARRAY_BUFFER, HistogramVBO);
+
+	//Alocate buffer
+	glBufferData(GL_ARRAY_BUFFER, 2*WIDTH*HEIGHT*sizeof(float), arr, GL_STATIC_DRAW);
+	//glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	//Fill VBO
+	//glBufferSubData(GL_ARRAY_BUFFER, 0, 2*w*h*sizeof(float), arr);
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+
+	/*for(int k=0; k < 16; k++) {
+		DPRINTF("k:%d - %f %f",k,arr[2*k],arr[2*k + 1]);
+	}*/
 }
 
 //DevIL
@@ -106,8 +141,8 @@ GLuint loadImage(const char* theFileName)
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 
 		// Set texture interpolation method to use linear interpolation (no MIPMAPS)
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
 		// Specify the texture specification
 		glTexImage2D(GL_TEXTURE_2D, 				// Type of texture
@@ -135,14 +170,145 @@ GLuint loadImage(const char* theFileName)
 }
 //DevIL
 
+void initTex() {
+	//Render texture should have the same res as display
+	glGenTextures (1, &renderTex);
+	glBindTexture (GL_TEXTURE_2D, renderTex);
+	glTexImage2D (GL_TEXTURE_2D, 0, GL_RGB32F , 256, 1, 0, GL_RGB, GL_FLOAT, 0);
+	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	/*glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);*/
+	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void initHistogramFBO() {
+	glGenFramebuffers (1, &FBO);
+	glBindFramebuffer (GL_FRAMEBUFFER, FBO);
+	glFramebufferTexture2D (GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, renderTex, 0);
+
+	// check FBO status
+	GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+	switch(status) {
+	case GL_FRAMEBUFFER_COMPLETE_EXT:
+		std::cout << "Framebuffer complete." << std::endl;
+		break;
+		//return true;
+
+	case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT_EXT:
+		std::cout << "[ERROR] Framebuffer incomplete: Attachment is NOT complete." << std::endl;
+		break;
+
+	case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT_EXT:
+		std::cout << "[ERROR] Framebuffer incomplete: No image is attached to FBO." << std::endl;
+		break;
+
+	case GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS_EXT:
+		std::cout << "[ERROR] Framebuffer incomplete: Attached images have different dimensions." << std::endl;
+		break;
+
+	case GL_FRAMEBUFFER_INCOMPLETE_FORMATS_EXT:
+		std::cout << "[ERROR] Framebuffer incomplete: Color attached images have different internal formats." << std::endl;
+		break;
+
+	case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER_EXT:
+		std::cout << "[ERROR] Framebuffer incomplete: Draw buffer." << std::endl;
+		break;
+
+	case GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER_EXT:
+		std::cout << "[ERROR] Framebuffer incomplete: Read buffer." << std::endl;
+		break;
+
+	case GL_FRAMEBUFFER_UNSUPPORTED_EXT:
+		std::cout << "[ERROR] Unsupported by FBO implementation." << std::endl;
+		break;
+
+	default:
+		std::cout << "[ERROR] Unknow error." << std::endl;
+		break;
+	}
+
+	glBindFramebuffer (GL_FRAMEBUFFER, 0);
+}
+
+void computeHistogram() {
+	glViewport(0, 0, WIDTH, HEIGHT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClearColor(0.0, 0.0, 0.0, 0.0);
+
+	glDisable(GL_DEPTH_TEST);
+	//Enable blending
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_ONE, GL_ONE);
+	//Additive
+	glBlendEquation(GL_FUNC_ADD);
+	
+	hist.Use();
+
+	glBindBuffer(GL_ARRAY_BUFFER, HistogramVBO);
+
+	glVertexAttribPointer(hist["vPosition"], 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GL_FLOAT), (void*)0);
+	glEnableVertexAttribArray(hist["vPosition"]);
+
+	glUniform1i(hist("tex"), 0);
+
+	glBindFramebuffer(GL_FRAMEBUFFER, FBO);
+	//glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	//Compute histogram
+	glDrawArrays(GL_POINTS, 0, WIDTH*HEIGHT);
+
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	hist.UnUse();
+	//Disable blending
+	glDisable(GL_BLEND);
+
+	float hPixels[256];
+	glReadPixels(0, 0, 256, 1, GL_BLUE, GL_FLOAT, hPixels);
+
+	int sum = 0;
+	if (printed != 0) 
+	{
+		cout << "\n\n-----------\n\n";
+		for(int j = 0; j < 256; j++)
+		{
+			//if((j % 3) == 0)
+				cout << j << ":" << hPixels[j] << endl;
+				sum += hPixels[j];
+		}
+		cout << endl << sum << endl;
+		printed--;
+	}
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
 
 void onInit() {
-	tex = loadImage("../textures/texture.png");
-	tex2 = loadImage("../textures/floor.png");
+	//tex = loadImage("../textures/texture.png");
+	tex = loadImage("../textures/sracka.png");
+	tex2 = loadImage("../textures/sracka.png");
 	ctv = new CTextureViewer(0, "../shaders/textureViewer.vs", "../shaders/textureViewer.frag");
 	ctv->setTexture(tex);
 	ctv->setTexture2(tex2);
+
+	hist.LoadFromFile(GL_VERTEX_SHADER, "../shaders/histogram.vs");
+	hist.LoadFromFile(GL_FRAGMENT_SHADER, "../shaders/histogram.frag");
+	hist.CreateAndLinkProgram();
+
+	hist.Use();
+
+	//Create uniforms and attributes (filled later)
+	hist.AddAttribute("vPosition");
+	hist.AddUniform("tex");
+
+	hist.UnUse();
+
+	initTex();
+	initPointVBO();
+	initHistogramFBO();
 }
+
 
 void Display() {
 	//Clear the screen
@@ -195,7 +361,7 @@ int main() {
 	if(SDL_Init(SDL_INIT_VIDEO)< 0) throw SDL_Exception();
 	SDL_EnableKeyRepeat(100,SDL_DEFAULT_REPEAT_INTERVAL);
 	//Create a OpenGL window
-	screen = init(800,600,24,24,8);
+	screen = init(256,256,24,24,8);
 	//SDL_WM_SetCaption(WINDOW_TITLE, WINDOW_TITLE);
 
 	const int FPS_limit = 60;
@@ -215,7 +381,9 @@ int main() {
 					break;
 			}
 		}
-
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, tex2);
+		computeHistogram();
 		DisplayTexture(ctv);
 	}
 	Finalize();

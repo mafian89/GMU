@@ -182,3 +182,10 @@ UpgradeLog*.htm
 
 # Microsoft Fakes
 FakesAssemblies/
+Android/OpenGLESTest/.project
+Android/OpenGLESTest/.project
+Android/OpenGLESTest/gen/com/example/openglestest/BuildConfig.java
+Android/OpenGLESTest/libs/armeabi/libtestNativeRenderer.so
+Android/OpenGLESTest/project.properties
+Android/OpenGLESTest/.project
+Android/OpenGLESTest/libs/armeabi/libtestNativeRenderer.so

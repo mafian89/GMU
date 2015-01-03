@@ -5,7 +5,7 @@ public class rendererNativeWrapper {
         System.loadLibrary("testNativeRenderer");
     }
  
-    public static native void on_surface_created();
+    public static native void on_surface_created(int resx, int resy);
  
     public static native void on_surface_changed(int width, int height);
  

@@ -9,10 +9,7 @@ uniform vec2 uv_offset3[9];
 uniform vec2 uv_offset5[25];
 uniform vec2 uv_offset11[121];
 
-//bitwise_and
 void main()
 {
-	gl_FragColor = texture2D(tex, uv) * texture2D(tex2,uv);
-
+	gl_FragColor = texture2D(tex2, uv);
 }
-
