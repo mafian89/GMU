@@ -30,19 +30,6 @@ public class TestGLRenderer implements GLSurfaceView.Renderer {
 	private Double sum = 0.0;
 	private long count = 0;
 	
-	//public FPSCounter counterFPS;
-	long startTime = System.nanoTime();
-    int frames = 0;
-
-    public void logFrame() {
-        frames++;
-        if(System.nanoTime() - startTime >= 1000000000) {
-            Log.d("FPSCounter", "fps: " + frames);
-            frames = 0;
-            startTime = System.nanoTime();
-        }
-    }
-	
 	private final Context mActivityContext;
 	//Context will be probably used for loading resources
 	public TestGLRenderer(final Context activityContext) {
@@ -56,16 +43,14 @@ public class TestGLRenderer implements GLSurfaceView.Renderer {
 		Long estimatedTime = System.currentTimeMillis() - startTime;
 		//Log.d("Draw", estimatedTime.toString());
 		
-		logFrame();
-		
-		/*count++;
+		count++;
 		sum += estimatedTime;
 		if (count == 100) {
 			count = 0;
 			sum /= 100.0;
 			Log.d("Draw", sum.toString());
 			sum = 0.0;
-		}*/
+		}
 	}
 
 	@Override
