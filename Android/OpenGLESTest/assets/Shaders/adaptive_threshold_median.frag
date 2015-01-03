@@ -14,8 +14,6 @@ uniform vec2 uv_offset11[121];
 
 const int valueC = 10;
 
-vec4 result;
-
 /////////////////////////////
 // Adaptive threshold type //
 //  1 - mean 			   //
@@ -26,25 +24,17 @@ vec4 result;
 const int thresholdType = 3; 
 const bool inverseThreshold = false;
 
+float temp, a, b;
 
-/*float median(float sample[kernelSize * kernelSize])
-{
-	float tmp;
-	int midIndex = int(((kernelSize * kernelSize)-1)/2);
+#define s2(a, b) temp = a; a = min(a, b); b = max(temp, b);
+#define mn3(a, b, c) s2(a, b); s2(a, c);
+#define mx3(a, b, c) s2(b, c); s2(a, c);
 
-	//sort array
-	for (int n = ((kernelSize * kernelSize) - 1); n > 0; --n) 
-	{
-  		for (int i = 0; i < n; ++i) 
-  		{ 
-			tmp = min(sample[i], sample[i+1]); 
-			sample[i+1] = sample[i] + sample[i+1] - tmp; 
-			sample[i] = tmp; 
-		}
-	}
+#define mnmx3(a, b, c) mx3(a, b, c); s2(a, b); // 3 exchanges
+#define mnmx4(a, b, c, d) s2(a, b); s2(c, d); s2(a, c); s2(b, d); // 4 exchanges
+#define mnmx5(a, b, c, d, e) s2(a, b); s2(c, d); mn3(a, c, e); mx3(b, d, e); // 6 exchanges
+#define mnmx6(a, b, c, d, e, f) s2(a, d); s2(b, e); s2(c, f); mn3(a, b, c); mx3(d, e, f); // 7 exchanges
 
-	return sample[midIndex];
-}*/
 
 //adaptive threshold
 void main(void)
@@ -74,40 +64,11 @@ void main(void)
     	threshold = int((sampleSum / float(kernelSize * kernelSize))*255.0) - valueC;
     }
     else if (thresholdType == 3) {  //median
-    
-		float tmp;
-		int midIndex = int(((kernelSize * kernelSize)-1)/2);
-		int n, i;
-	
-		//sort array
-	/*	for (n = ((kernelSize * kernelSize) - 1); n > 0; --n) 
-		{
-	  		for (i = 0; i < n; ++i) 
-	  		{ 
-				tmp = min(sample[i], sample[i+1]); 
-				sample[i+1] = sample[i] + sample[i+1] - tmp; 
-				sample[i] = tmp; 
-			}
-		}
-	*/
-	
-		n = 8;
-		i = 0;
-		while (n != 0)
-		{
-			tmp = min(sample[i], sample[i+1]); 
-			sample[i+1] = sample[i] + sample[i+1] - tmp; 
-			sample[i] = tmp;
-			i++;
-			
-			if (i == n)
-			{
-				i = 0;
-				n = n - 1;
-			}
-		}	
-    
-    	threshold = int( sample[midIndex] * 255.0); 
+		mnmx6(sample[0], sample[1], sample[2], sample[3], sample[4], sample[5]);
+		mnmx5(sample[1], sample[2], sample[3], sample[4], sample[6]);
+		mnmx4(sample[2], sample[3], sample[4], sample[7]);
+		mnmx3(sample[3], sample[4], sample[8]);
+    	threshold = int( sample[4] * 255.0); 
     }
     else if (thresholdType == 4) {  //(min+max)/2
     	threshold = int(((minValueSample + maxValueSample)/2.0) * 255.0);
@@ -137,6 +98,4 @@ void main(void)
     }
     
     gl_FragColor = vec4(vec3(grey),1.0);
-    
-    //result = vec4(vec3(grey),1.0);
 }

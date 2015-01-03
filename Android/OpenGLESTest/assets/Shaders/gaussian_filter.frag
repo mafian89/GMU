@@ -8,17 +8,7 @@ const int kernelSize = 5;
 uniform vec2 uv_offset3[9];
 uniform vec2 uv_offset5[25];
 uniform vec2 uv_offset11[121];
-
-vec4 result;
-
-/*const float gaussian[49] = float[49](0.000036, 0.000363, 0.001446, 0.002291, 0.001446, 0.000363, 0.000036, 
-									 0.000363, 0.003676, 0.014662, 0.023226, 0.014662, 0.003676, 0.000363, 
-									 0.001446, 0.014662, 0.058488, 0.092651, 0.058488, 0.014662, 0.001446,  
-									 0.002291, 0.023226, 0.092651, 0.146768, 0.092651, 0.023226, 0.002291,  
-									 0.001446, 0.014662, 0.058488, 0.092651, 0.058488, 0.014662, 0.001446,  
-									 0.000363, 0.003676, 0.014662, 0.023226, 0.014662, 0.003676, 0.000363, 
-									 0.000036, 0.000363, 0.001446, 0.002291, 0.001446, 0.000363, 0.000036); */
-									 
+				 
   
 //gaussian filter
 void main(void)
@@ -34,7 +24,8 @@ void main(void)
     //Gaussian 3x3
    /* gl_FragColor = ((0.04 * (sample[0] + sample[2] + sample[6] + sample[8]))+
     				(0.12 * (sample[1] + sample[3] + sample[5] + sample[7]))+
-    				(0.36 * sample[4]));*/
+    				(0.36 * sample[4]));
+    */
     
     //Gaussian 5x5			
 	gl_FragColor = (
@@ -46,14 +37,6 @@ void main(void)
                    (0.15018 * sample[12])
                    ) ; 
                    
-    /*result = (
-                   (0.00366  * (sample[0] + sample[4]  + sample[20] + sample[24])) +
-                   (0.01465  * (sample[1] + sample[3]  + sample[5]  + sample[9] + sample[15] + sample[19] + sample[21] + sample[23])) +
-                   (0.02564  * (sample[2] + sample[10] + sample[14] + sample[22])) +
-                   (0.05861 * (sample[6] + sample[8]  + sample[16] + sample[18])) +
-                   (0.09524 * (sample[7] + sample[11] + sample[13] + sample[17])) +
-                   (0.15018 * sample[12])
-                   ) ;*/
                    
     //Gaussian 7x7
 	/*gl_FragColor = (								 

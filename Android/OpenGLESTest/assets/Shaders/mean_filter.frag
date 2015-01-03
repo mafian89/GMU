@@ -9,8 +9,6 @@ uniform vec2 uv_offset3[9];
 uniform vec2 uv_offset5[25];
 uniform vec2 uv_offset11[121];
 
-vec4 result;
-
 //mean filter
 void main(void)
 {
@@ -22,7 +20,4 @@ void main(void)
 	}
 
     gl_FragColor = vec4(colorSum / float(kernelSize * kernelSize));
-    
-    //result = vec4(colorSum / float(kernelSize * kernelSize));
-    
 }
