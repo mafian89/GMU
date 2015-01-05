@@ -175,6 +175,10 @@ public class GLActivity extends Activity {
 			rendererNativeWrapper.switchEffect(20);
 			textView.setText(item.getTitle());
 			return true;
+		} else if (id == R.id.adaptive_threshold_meanC_textures) {
+			rendererNativeWrapper.switchEffect(22);
+			textView.setText(item.getTitle());
+			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}

@@ -12,6 +12,7 @@
     <string name="adaptive_threshold_meanC">Adaptive Threshold (mean - C) [11x11]</string>
     <string name="adaptive_threshold_median">Adaptive Threshold (median) [3x3]</string>
     <string name="adaptive_threshold_minMax">Adaptive Threshold ((min + max) / 2) [11x11]</string>
+    <string name="adaptive_threshold_meanC_textures">Ad. Thresh. [11x11] textures offset</string>
     <string name="threshold">Threshold</string>
     
     <string name="bitwise_and">Bitwise AND</string>

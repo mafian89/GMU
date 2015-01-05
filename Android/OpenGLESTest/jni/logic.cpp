@@ -102,6 +102,9 @@ void drawQuad(GLuint prog, int v_coord_flipped) {
 	glUniform2fv(shaderParams[prog].offset5_1D_X, kernelLength5_1D, uv_offset5_X);
 	glUniform2fv(shaderParams[prog].offset5_1D_Y, kernelLength5_1D, uv_offset5_Y);
 
+	glUniform1i(shaderParams[prog].offsetX_loc, 2);
+	glUniform1i(shaderParams[prog].offsetY_loc, 3);
+
 
 	/*glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texID1);
@@ -384,8 +387,8 @@ void compileAllShaders() {
 		glGenTextures(1, &offsetYTex);
 		glBindTexture(GL_TEXTURE_2D, offsetYTex);
 		//Texture filtering should be set to GL_NEAREST in case if we want to compute histogram
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
@@ -399,8 +402,8 @@ void compileAllShaders() {
 		glGenTextures(1, &offsetXTex);
 		glBindTexture(GL_TEXTURE_2D, offsetXTex);
 		//Texture filtering should be set to GL_NEAREST in case if we want to compute histogram
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
@@ -432,6 +435,8 @@ void compileAndSetTargetedShader(int i) {
     shaderParams[i].offset11_loc = glGetUniformLocation(shaderParams[i].prog, "uv_offset11");
     shaderParams[i].offset5_1D_X = glGetUniformLocation(shaderParams[i].prog, "uv_offset5_X");
     shaderParams[i].offset5_1D_Y = glGetUniformLocation(shaderParams[i].prog, "uv_offset5_Y");
+    shaderParams[i].offsetX_loc = glGetUniformLocation(shaderParams[i].prog, "tex3");
+	shaderParams[i].offsetY_loc = glGetUniformLocation(shaderParams[i].prog, "tex4");
 	//DPRINTF("%s %s", effectsShaders[i][0], effectsShaders[i][1]);
 }
 
