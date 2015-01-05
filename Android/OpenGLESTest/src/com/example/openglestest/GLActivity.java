@@ -171,6 +171,10 @@ public class GLActivity extends Activity {
 			rendererNativeWrapper.switchEffect(19);
 			textView.setText(item.getTitle());
 			return true;
+		} else if (id == R.id.gaussian_filter_sep) {
+			rendererNativeWrapper.switchEffect(20);
+			textView.setText(item.getTitle());
+			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}

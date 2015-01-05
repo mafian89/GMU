@@ -29,6 +29,7 @@
     <string name="gaussian_filter">Gaussian Filter [5x5]</string>
     <string name="mean_filter">Mean Filter [11x11]</string>
     <string name="median_filter">Median Filter [3x3]</string>
+    <string name="gaussian_filter_sep">Gaussian Filter Sep [5x5]</string>
 
     
    

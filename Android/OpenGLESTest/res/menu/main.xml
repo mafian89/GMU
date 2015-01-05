@@ -124,6 +124,11 @@
         android:id="@+id/gaussian_filter"
         android:orderInCategory="100"
         android:showAsAction="never"
-        android:title="@string/gaussian_filter"/> 
+        android:title="@string/gaussian_filter"/>
+    
+    <item android:id="@+id/gaussian_filter_sep" 
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/gaussian_filter_sep"/>
 
 </menu>

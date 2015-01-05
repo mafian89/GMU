@@ -3,6 +3,9 @@ varying vec2 uv;
 uniform sampler2D tex;		//textura
 uniform sampler2D tex2;		//maska
 
+uniform sampler2D tex3;		//X offset
+uniform sampler2D tex4;		//Y offset
+
 const float minValue = 0.0;
 const float maxValue = 1.0;
 
@@ -52,7 +55,7 @@ void main(void)
     float maxValueSample = float(0.0);
     float sampleSum = float(0.0);
 
-    for (int i = 0; i < (kernelSize * kernelSize); i++)
+    /*for (int i = 0; i < (kernelSize * kernelSize); i++)
     {
         sample[i] = dot(texture2D(tex, uv + uv_offset11[i]).rgb, vec3(0.299, 0.587, 0.114));
 
@@ -60,7 +63,29 @@ void main(void)
         maxValueSample = max(sample[i], maxValueSample);
         sampleSum += sample[i];
 
+    }*/
+    
+    float X = 0.0;
+    float Y = 0.0;
+    float xyInc = 1.0 / float(kernelSize);
+    
+    for (int i = 0; i < (kernelSize * kernelSize); i++)
+    {
+    	X += xyInc;
+    	
+    	if (X > 1.000001)
+    	{
+    		X = 0.0;
+    		Y += xyInc;
+    	}
+    	
+    	sample[i] = dot(texture2D(tex, vec2(uv.x + texture2D(tex3,vec2(X,Y)).r,uv.y + texture2D(tex4,vec2(X,Y)).r) ).rgb, vec3(0.299, 0.587, 0.114));
+    	
+    	minValueSample = min(sample[i], minValueSample);
+        maxValueSample = max(sample[i], maxValueSample);
+        sampleSum += sample[i];
     }
+    
 
     //evaluate threshold
     int threshold;

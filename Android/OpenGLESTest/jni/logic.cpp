@@ -33,6 +33,15 @@ int kernelSize11 = 11;
 int kernelLength11 = 121;
 float uv_offset11[242];
 
+
+int kernelSize5_1D = 5;
+int kernelLength5_1D = 5;
+float uv_offset5_X[5];
+float uv_offset5_Y[5];
+
+float uv_offset11_X[121];
+float uv_offset11_Y[121];
+
 #define EPRINTF(...)  __android_log_print(ANDROID_LOG_ERROR,"logic",__VA_ARGS__)
 #define DPRINTF(...)  __android_log_print(ANDROID_LOG_DEBUG,"logic",__VA_ARGS__)
 
@@ -89,6 +98,10 @@ void drawQuad(GLuint prog, int v_coord_flipped) {
 	glUniform2fv(shaderParams[prog].offset3_loc, kernelLength3, uv_offset3);
 	glUniform2fv(shaderParams[prog].offset5_loc, kernelLength5, uv_offset5);
 	glUniform2fv(shaderParams[prog].offset11_loc, kernelLength11, uv_offset11);
+
+	glUniform2fv(shaderParams[prog].offset5_1D_X, kernelLength5_1D, uv_offset5_X);
+	glUniform2fv(shaderParams[prog].offset5_1D_Y, kernelLength5_1D, uv_offset5_Y);
+
 
 	/*glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texID1);
@@ -172,6 +185,33 @@ void on_draw_frame() {
 		glBindTexture(GL_TEXTURE_2D, renderTex);
 		//drawQuad(actualProgram,1); //actualProgram
 		drawQuad(13,1); //dilation
+	} else if (actualProgram == 20) {//gaussian filter X
+			//computeHistogram();
+			//Comment from here
+			glBindFramebuffer(GL_FRAMEBUFFER, FBO);
+
+			//texture1 - image
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, texID1);
+
+			//texture2 - mask
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, texID2);
+			//drawQuad(0,0); //debug
+			drawQuad(20,0);	//erosion
+			glBindFramebuffer(GL_FRAMEBUFFER, 0);
+			//To here
+
+			//glClear ( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+			glActiveTexture(GL_TEXTURE0);
+			//glBindTexture(GL_TEXTURE_2D, texID1); //Uncoment this in case of problems
+			glBindTexture(GL_TEXTURE_2D, renderTex); //Comment this in case of problems
+
+			glActiveTexture(GL_TEXTURE1);
+			//glBindTexture(GL_TEXTURE_2D, texID2); //Uncoment this in case of problems
+			glBindTexture(GL_TEXTURE_2D, renderTex);
+			//drawQuad(actualProgram,1); //actualProgram
+			drawQuad(21,1); //dilation
 	} else {
 		//computeHistogram();
 		//Comment from here
@@ -195,6 +235,14 @@ void on_draw_frame() {
 
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, texID2); //Uncoment this in case of problems
+
+		//////////////////////////////////
+		glActiveTexture(GL_TEXTURE2);
+		glBindTexture(GL_TEXTURE_2D, offsetXTex); //Uncoment this in case of problems
+
+		glActiveTexture(GL_TEXTURE3);
+		glBindTexture(GL_TEXTURE_2D, offsetYTex); //Uncoment this in case of problems
+		//////////////////////////////////////
 		//glBindTexture(GL_TEXTURE_2D, renderTex);
 		drawQuad(actualProgram,1); //actualProgram
 		//drawQuad(14,1);
@@ -299,6 +347,71 @@ void compileAllShaders() {
 
 		}
 
+
+		for (int i = -1; i < 4; i++)
+		{
+			uv_offset5_X[i+1] = (-1.0 * xInc) + ((float)i * xInc);
+			uv_offset5_Y[i+1] = (-1.0 * yInc) + ((float)i * yInc);
+
+			//DPRINTF("x: %f",uv_offset5_X[i+1]);
+			//DPRINTF("y: %f",uv_offset5_Y[i+1]);
+		}
+
+		////////////////////////////////////////////
+		/*for (int i = -4; i < 7; i++)
+		{
+			uv_offset11_X[i+1] = (-1.0 * xInc) + ((float)i * xInc);
+			uv_offset11_Y[i+1] = (-1.0 * yInc) + ((float)i * yInc);
+
+			//DPRINTF("x: %f",uv_offset5_X[i+1]);
+			//DPRINTF("y: %f",uv_offset5_Y[i+1]);
+		}*/
+
+		for (int i = 0; i < kernelSize11; i++)
+		{
+			for (int j = 0; j < kernelSize11; j++)
+			{
+				uv_offset11_X[(((i*kernelSize11)+j)*2)] = (-1.0 * xInc) + ((float)i * xInc);
+				uv_offset11_Y[(((i*kernelSize11)+j)*2)] = (-1.0 * yInc) + ((float)j * yInc);
+
+				//DPRINTF("x: %f",uv_offset[(((i*kernelSize)+j)*2)+0]);
+				//DPRINTF("y: %f",uv_offset[(((i*kernelSize)+j)*2)+1]);
+			}
+
+		}
+
+		//offsetY v texture
+		glGenTextures(1, &offsetYTex);
+		glBindTexture(GL_TEXTURE_2D, offsetYTex);
+		//Texture filtering should be set to GL_NEAREST in case if we want to compute histogram
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 11, 11, 0, GL_RGBA,
+				GL_FLOAT, uv_offset11_Y);
+		glGenerateMipmap(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, 0);
+
+		//offsetX v texture
+		glGenTextures(1, &offsetXTex);
+		glBindTexture(GL_TEXTURE_2D, offsetXTex);
+		//Texture filtering should be set to GL_NEAREST in case if we want to compute histogram
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 11, 11, 0, GL_RGBA,
+				GL_FLOAT, uv_offset11_X);
+		glGenerateMipmap(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, 0);
+		//////////////////////////////////////////
+
+
 		for(int i=0; i < NUM_OF_SHADERS; i++) {
 			DPRINTF("%s %s [%d]", effectsShaders[i][0],effectsShaders[i][1],i);
 			compileAndSetTargetedShader(i);
@@ -317,6 +430,8 @@ void compileAndSetTargetedShader(int i) {
     shaderParams[i].offset3_loc = glGetUniformLocation(shaderParams[i].prog, "uv_offset3");
     shaderParams[i].offset5_loc = glGetUniformLocation(shaderParams[i].prog, "uv_offset5");
     shaderParams[i].offset11_loc = glGetUniformLocation(shaderParams[i].prog, "uv_offset11");
+    shaderParams[i].offset5_1D_X = glGetUniformLocation(shaderParams[i].prog, "uv_offset5_X");
+    shaderParams[i].offset5_1D_Y = glGetUniformLocation(shaderParams[i].prog, "uv_offset5_Y");
 	//DPRINTF("%s %s", effectsShaders[i][0], effectsShaders[i][1]);
 }
 
