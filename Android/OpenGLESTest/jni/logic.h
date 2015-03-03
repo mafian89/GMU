@@ -27,7 +27,7 @@ void initRenderTex();
 void initPointVBO(int w, int h);
 void computeHistogram();
 
-GLuint texID1,texID2,histogramTex,renderTex;
+GLuint texID1,texID2,histogramTex,renderTex,offsetXTex, offsetYTex;
 int textureWidth,textureHeight;
 int displayWidth, displayHeight;
 extern int actualProgram;
@@ -37,7 +37,7 @@ extern int kernelSize3, kernelLength3;
 extern int kernelSize5, kernelLength5;
 extern int kernelSize11, kernelLength11;
 
-#define NUM_OF_SHADERS 20
+#define NUM_OF_SHADERS 23
 
 static const char* effectsShaders[][NUM_OF_SHADERS] = {
 		{"Shaders/basic.vs", "Shaders/basic.frag"},
@@ -59,14 +59,18 @@ static const char* effectsShaders[][NUM_OF_SHADERS] = {
 		{"Shaders/basic.vs", "Shaders/closing.frag"},
 		{"Shaders/basic.vs", "Shaders/mean_filter.frag"},
 		{"Shaders/basic.vs", "Shaders/median_filter.frag"},
-		{"Shaders/basic.vs", "Shaders/gaussian_filter.frag"}
+		{"Shaders/basic.vs", "Shaders/gaussian_filter.frag"},
+		{"Shaders/basic.vs", "Shaders/gaussian_filterX.frag"},
+		{"Shaders/basic.vs", "Shaders/gaussian_filterY.frag"},
+		{"Shaders/basic.vs", "Shaders/adaptive_threshold_meanC_textures_offset.frag"}
 };
 
 
 typedef struct shaderParams {
 	GLuint prog;
 	GLuint pos_loc, uv_loc, tex1_loc, tex2_loc, v_coord_flipped_loc;
-	GLuint offset3_loc, offset5_loc, offset11_loc;
+	GLuint offset3_loc, offset5_loc, offset11_loc, offset5_1D_X, offset5_1D_Y;
+	GLuint offsetX_loc, offsetY_loc;
 }SHADER_PARAMS;
 #endif /* LOGIC_H_ */
 

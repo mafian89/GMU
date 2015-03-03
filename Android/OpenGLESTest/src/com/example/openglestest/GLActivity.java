@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -33,6 +34,7 @@ public class GLActivity extends Activity {
 		final ConfigurationInfo configurationInfo = activityManager.getDeviceConfigurationInfo();
 		final boolean supportsEs2 = configurationInfo.reqGlEsVersion >= 0x20000;
 		//mGLSurfaceView.setPreserveEGLContextOnPause(true);
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		
 		if(supportsEs2) {
 			// Request an OpenGL ES 2.0 compatible context.
@@ -169,6 +171,14 @@ public class GLActivity extends Activity {
 			return true;
 		} else if (id == R.id.gaussian_filter) {
 			rendererNativeWrapper.switchEffect(19);
+			textView.setText(item.getTitle());
+			return true;
+		} else if (id == R.id.gaussian_filter_sep) {
+			rendererNativeWrapper.switchEffect(20);
+			textView.setText(item.getTitle());
+			return true;
+		} else if (id == R.id.adaptive_threshold_meanC_textures) {
+			rendererNativeWrapper.switchEffect(22);
 			textView.setText(item.getTitle());
 			return true;
 		}

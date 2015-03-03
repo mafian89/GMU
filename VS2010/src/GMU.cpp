@@ -77,15 +77,8 @@ void initPointVBO() {
 	glBufferData(GL_ARRAY_BUFFER, 2*WIDTH*HEIGHT*sizeof(float), arr, GL_STATIC_DRAW);
 	//glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	//Fill VBO
-	//glBufferSubData(GL_ARRAY_BUFFER, 0, 2*w*h*sizeof(float), arr);
-
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-
-	/*for(int k=0; k < 16; k++) {
-		DPRINTF("k:%d - %f %f",k,arr[2*k],arr[2*k + 1]);
-	}*/
 }
 
 //DevIL
@@ -251,6 +244,8 @@ void computeHistogram() {
 	glEnableVertexAttribArray(hist["vPosition"]);
 
 	glUniform1i(hist("tex"), 0);
+	glUniform1f(hist("textureWidth"), (float)WIDTH);
+	glUniform1f(hist("textureHeight"), (float)HEIGHT);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, FBO);
 	//glClear(GL_COLOR_BUFFER_BIT);
@@ -286,8 +281,8 @@ void computeHistogram() {
 
 void onInit() {
 	//tex = loadImage("../textures/texture.png");
-	tex = loadImage("../textures/sracka.png");
-	tex2 = loadImage("../textures/sracka.png");
+	tex = loadImage("../textures/dots.png");
+	tex2 = loadImage("../textures/dots.png");
 	ctv = new CTextureViewer(0, "../shaders/textureViewer.vs", "../shaders/textureViewer.frag");
 	ctv->setTexture(tex);
 	ctv->setTexture2(tex2);
@@ -301,6 +296,8 @@ void onInit() {
 	//Create uniforms and attributes (filled later)
 	hist.AddAttribute("vPosition");
 	hist.AddUniform("tex");
+	hist.AddUniform("textureWidth");
+	hist.AddUniform("textureHeight");
 
 	hist.UnUse();
 
